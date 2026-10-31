@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(npm ci)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(npx vitest *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git switch *)",
+      "Bash(git fetch *)",
+      "Bash(git pull --ff-only *)",
+      "Bash(git add frontend/*)",
+      "Bash(git commit *)",
+      "Bash(gh issue view *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(gh pr create *)"
+    ],
+    "deny": [
+      "Edit(/api/**)",
+      "Edit(/tests/**)",
+      "Edit(/evals/**)",
+      "Edit(/infra/**)",
+      "Edit(/scripts/**)",
+      "Edit(/docs/**)",
+      "Edit(/.github/**)",
+      "Edit(/.claude/**)",
+      "Edit(/CLAUDE.md)",
+      "Edit(/README.md)",
+      "Edit(/CONTRIBUTING.md)",
+      "Edit(/SECURITY.md)",
+      "Edit(/LICENSE)",
+      "Edit(/.gitignore)",
+      "Edit(/.env*)",
+      "Edit(/pyproject.toml)",
+      "Edit(/requirements*.txt)",
+      "Edit(/frontend/CLAUDE.md)",
+      "Read(/.env)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * --force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push origin main*)",
+      "Bash(git push * main)",
+      "Bash(git reset --hard*)",
+      "Bash(git rebase *)",
+      "Bash(git merge *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(az *)",
+      "Bash(rm -rf *)"
+    ]
+  }
+}
