@@ -1,0 +1,36 @@
+name: Experiment
+description: A measurement that decides something (a model, a reranker, a threshold, a prompt)
+title: "Experiment: "
+labels: ["type: experiment"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in the question, the setup and the reading rule **before** running anything.
+        Results go in a comment and in `evals/results/`, not in this description.
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What decision depends on this measurement?
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Cases, files, number of runs, settings that change and settings that stay fixed.
+    validations:
+      required: true
+  - type: textarea
+    id: rule
+    attributes:
+      label: Reading rule, fixed before the results
+      description: For example "we switch to B if it finds the expected section more often than A on at least 3 of 4 document sizes, with no more misses on out-of-scope questions".
+    validations:
+      required: true
+  - type: textarea
+    id: cost
+    attributes:
+      label: Expected cost
+      description: Calls, tokens, money.

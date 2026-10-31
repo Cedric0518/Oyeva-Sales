@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - name: Lint
+        run: ruff check . && ruff format --check .
+      - name: Tests
+        run: |
+          if [ -d tests ] && find tests -name 'test_*.py' | grep -q .; then
+            pytest
+          else
+            echo "No tests yet."
+          fi
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v6
+      - name: Is there a frontend yet?
+        id: present
+        working-directory: .
+        run: |
+          if [ -f frontend/package-lock.json ]; then echo "yes=true" >> "$GITHUB_OUTPUT"; else echo "yes=false" >> "$GITHUB_OUTPUT"; echo "No frontend yet."; fi
+      - uses: actions/setup-node@v6
+        if: steps.present.outputs.yes == 'true'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - if: steps.present.outputs.yes == 'true'
+        run: npm ci
+      - if: steps.present.outputs.yes == 'true'
+        run: npm run lint --if-present
+      - if: steps.present.outputs.yes == 'true'
+        run: npm run build
+      - if: steps.present.outputs.yes == 'true'
+        run: npm run test --if-present
+
+  # A pull request from a frontend/... branch may only change files in frontend/.
+  frontend-scope:
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'frontend/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check changed paths
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          outside=$(git diff --name-only "$BASE_SHA...$HEAD_SHA" | grep -v '^frontend/' || true)
+          if [ -n "$outside" ]; then
+            echo "::error::A frontend/ branch changed files outside frontend/:"
+            echo "$outside"
+            exit 1
+          fi
+          echo "All changes are inside frontend/."
+
+  # The single check required by the main branch rules.
+  ci-ok:
+    if: always()
+    needs: [backend, frontend, frontend-scope]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All jobs passed or were skipped
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for r in $RESULTS; do
+            if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then exit 1; fi
+          done

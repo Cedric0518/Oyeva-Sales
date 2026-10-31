@@ -1,0 +1,38 @@
+name: Plan step
+description: A step of the build plan (backend B0 to B13, frontend F1 to F5)
+title: "Bn: "
+labels: ["type: step"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: Why this step exists, in two or three sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: A checklist of what to do.
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: Observable facts that prove the step is finished (a command and its output, a screen, a committed report).
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: learn
+    attributes:
+      label: What this teaches
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes, links, open questions

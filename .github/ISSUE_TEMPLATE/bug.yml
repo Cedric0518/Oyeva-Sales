@@ -1,0 +1,39 @@
+name: Bug
+description: Something does not behave as the contract or the spec says
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen
+      description: Quote the contract, the spec or the reference answer if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reproduce
+      description: Dataset, question, commit or deployed version. No real customer data, no keys.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - API
+        - Agent
+        - Certified metrics or checks
+        - Market benchmark
+        - Documents and retrieval
+        - Frontend
+        - Azure or deployment
+    validations:
+      required: true

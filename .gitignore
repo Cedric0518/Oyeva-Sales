@@ -1,0 +1,37 @@
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+*.local
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Node and frontend
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
+
+# Local outputs of trial scripts
+scripts/out/
+
+# Azure
+.azure/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
