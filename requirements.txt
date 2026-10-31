@@ -1,6 +1,6 @@
 # Runtime dependencies of the API. Each plan step adds what it needs, pinned.
 # Needed now by the Atlas generator and oracle (evals/data/atlas/), same versions as the run
 # that produced the committed files:
-numpy==2.5.3
+numpy==2.5.4
 pandas==3.0.5
 openpyxl==3.1.5
