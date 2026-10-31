@@ -1,0 +1,70 @@
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 64px;
+  padding: 0 var(--space-6);
+  border-bottom: 1px solid var(--ink-700);
+  background: var(--ink-900);
+}
+
+.logo {
+  display: block;
+  height: 28px;
+  width: auto;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background: var(--ink-700);
+}
+
+.dataset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  color: var(--metal-200);
+}
+
+.dataset svg {
+  color: var(--metal-300);
+}
+
+.datasetName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.mode {
+  padding: 3px var(--space-2);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-full);
+  color: var(--metal-400);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}

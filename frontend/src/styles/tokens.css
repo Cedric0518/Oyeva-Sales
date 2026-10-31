@@ -1,0 +1,66 @@
+/* Oyeva Sales design tokens, generated from docs/brand/tokens.json. Do not edit by hand. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  color-scheme: dark;
+  /* color */
+  --ink-950: #060608;
+  --ink-900: #0D0D12;
+  --ink-850: #14141B;
+  --ink-800: #1C1C25;
+  --ink-700: #262631;
+  --metal-100: #F2F3F7;
+  --metal-200: #D9DBE3;
+  --metal-300: #B6B9C5;
+  --metal-400: #8E92A0;
+  --metal-500: #6B6F7C;
+  --metal-600: #4A4D58;
+  --violet-200: #D4C8FF;
+  --violet-300: #B9A6FF;
+  --violet-400: #9677FF;
+  --violet-500: #7B57F2;
+  --violet-600: #6D4AE8;
+  --violet-700: #5433C9;
+  --violet-950: #1E1440;
+  --teal-400: #2FC4B2;
+  --amber-400: #F5A524;
+  --green-400: #3DD68C;
+  --red-400: #F2555A;
+  --brand: var(--violet-600);
+  --text: var(--metal-100);
+  --text-muted: var(--metal-400);
+  --surface: var(--ink-850);
+  /* chrome: logo and one hero element per screen only */
+  --chrome: linear-gradient(135deg, #F6F7FA 0%, #C2C5CF 28%, #7A7E8B 50%, #D8DAE2 70%, #8C909D 100%);
+  /* spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  /* radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+  /* shadow */
+  --shadow-raised: 0 1px 0 rgba(255,255,255,0.04) inset, 0 12px 32px rgba(0,0,0,0.55);
+  --shadow-focus: 0 0 0 2px #060608, 0 0 0 4px #9677FF;
+  /* fonts */
+  --font-display: Sora, Inter, system-ui, sans-serif;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+.text-display { font-family: var(--font-display); font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.01em; }
+.text-metric { font-family: var(--font-display); font-size: 28px; line-height: 32px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.text-heading-lg { font-family: var(--font-display); font-size: 24px; line-height: 30px; font-weight: 600; }
+.text-heading-md { font-family: var(--font-display); font-size: 16px; line-height: 22px; font-weight: 600; }
+.text-body { font-family: var(--font-sans); font-size: 14px; line-height: 22px; font-weight: 400; }
+.text-body-strong { font-family: var(--font-sans); font-size: 14px; line-height: 22px; font-weight: 600; }
+.text-small { font-family: var(--font-sans); font-size: 12.5px; line-height: 18px; font-weight: 400; }
+.text-label { font-family: var(--font-sans); font-size: 11.5px; line-height: 14px; font-weight: 600; letter-spacing: 0.02em; }
+.text-code { font-family: var(--font-mono); font-size: 12.5px; line-height: 20px; font-weight: 400; }
