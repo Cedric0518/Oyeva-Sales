@@ -1,0 +1,119 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-6);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* The one chrome element of this screen (docs/brand/README.md). */
+.title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 44px;
+  letter-spacing: -0.01em;
+  background: var(--chrome);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  max-width: 600px;
+  color: var(--metal-300);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-lg);
+  background: var(--ink-850);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--metal-100);
+  font-weight: 600;
+}
+
+.hint {
+  color: var(--metal-400);
+  font-size: 12.5px;
+  line-height: 18px;
+}
+
+.select {
+  width: 100%;
+  max-width: 320px;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--metal-500);
+  border-radius: var(--radius-md);
+  background: var(--ink-800);
+  color: var(--metal-100);
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.sample {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-lg);
+  background: var(--ink-900);
+}
+
+.sampleTitle {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.spinner {
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
