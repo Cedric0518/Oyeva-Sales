@@ -1,0 +1,17 @@
+{
+  "online_july_2025_missing_amount": 4225.84,
+  "name_variants": {
+    "Lakeshore Dental Clinic": [
+      "LAKESHORE DENTAL CLINIC INC.",
+      "Lakeshore Dental Clinic Inc"
+    ],
+    "rows_changed": 18
+  },
+  "amount_mismatch_rows": 40,
+  "out_of_range_dates": [
+    "A0011527",
+    "A0009427"
+  ],
+  "duplicate_rows": 12,
+  "duplicate_amount": 176.83
+}

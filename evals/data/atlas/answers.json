@@ -1,0 +1,218 @@
+{
+  "rows_in_file": 59764,
+  "rows_out_of_range": 2,
+  "sales_by_year": {
+    "2024": 246477.77,
+    "2025": 649958.8,
+    "2026": 420781.22
+  },
+  "sales_by_year_without_duplicates": {
+    "2024": 246414.03,
+    "2025": 649865.65,
+    "2026": 420761.28
+  },
+  "sales_by_month": {
+    "2024-09": 53409.33,
+    "2024-10": 53317.97,
+    "2024-11": 62749.55,
+    "2024-12": 77000.92,
+    "2025-01": 49967.07,
+    "2025-02": 44024.09,
+    "2025-03": 37967.74,
+    "2025-04": 45935.14,
+    "2025-05": 53399.15,
+    "2025-06": 60462.47,
+    "2025-07": 47494.92,
+    "2025-08": 61280.73,
+    "2025-09": 58253.89,
+    "2025-10": 55227.16,
+    "2025-11": 68160.91,
+    "2025-12": 67785.53,
+    "2026-01": 50838.89,
+    "2026-02": 44334.55,
+    "2026-03": 52291.43,
+    "2026-04": 51811.48,
+    "2026-05": 51090.49,
+    "2026-06": 49469.75,
+    "2026-07": 54483.23,
+    "2026-08": 66461.4
+  },
+  "sales_by_store_2025": {
+    "Hamilton": 130078.68,
+    "Mississauga": 146179.42,
+    "Online": 44593.07,
+    "Ottawa": 145801.46,
+    "Toronto - Queen Street": 183306.17
+  },
+  "growth_jan_aug_2026_vs_2025": 0.0506,
+  "growth_jan_aug_2026_vs_2025_by_store": {
+    "Hamilton": -0.3141,
+    "Mississauga": 0.0655,
+    "Online": 0.6906,
+    "Ottawa": 0.2317,
+    "Toronto - Queen Street": 0.0346
+  },
+  "top10_customers_2025": [
+    [
+      "Bayfront Elementary School",
+      25266.63
+    ],
+    [
+      "Pinecrest Seniors Residence",
+      19738.21
+    ],
+    [
+      "Maple Ridge Daycare",
+      19495.72
+    ],
+    [
+      "Lakeshore Dental Clinic",
+      17596.75
+    ],
+    [
+      "Byward Market Bistro",
+      15998.29
+    ],
+    [
+      "Northgate Library Branch",
+      13519.0
+    ],
+    [
+      "Cooksville Medical Group",
+      13249.03
+    ],
+    [
+      "Locke Street Cafe",
+      12772.74
+    ],
+    [
+      "Kingsway Law Office",
+      11895.6
+    ],
+    [
+      "Harbour Physio Centre",
+      9700.6
+    ]
+  ],
+  "top10_share_2025": 0.245,
+  "walk_in_share_2025": 0.3418,
+  "top10_products_2025": [
+    [
+      "Backpack",
+      59465.13
+    ],
+    [
+      "Printer paper, 5 reams",
+      56070.0
+    ],
+    [
+      "Coffee beans 1 kg",
+      52146.43
+    ],
+    [
+      "Ink cartridge, black",
+      48006.28
+    ],
+    [
+      "Olive oil 1 L",
+      34899.44
+    ],
+    [
+      "Building blocks set",
+      29544.09
+    ],
+    [
+      "Sunscreen SPF 50",
+      25716.63
+    ],
+    [
+      "Laundry detergent 4 L",
+      23656.22
+    ],
+    [
+      "Board game",
+      22043.7
+    ],
+    [
+      "Sparkling water, 12 pack",
+      21364.85
+    ]
+  ],
+  "customers_jan_aug_2025_vs_2026": {
+    "lost": 420,
+    "new": 514,
+    "retained": 529
+  },
+  "business_accounts_lost_jan_aug_2026": [
+    "Bayfront Elementary School",
+    "Spadina Print Studio"
+  ],
+  "business_accounts_new_jan_aug_2026": [
+    "Greenline Architects"
+  ],
+  "average_basket_by_year": {
+    "2024": 54.37,
+    "2025": 53.6,
+    "2026": 52.76
+  },
+  "target_attainment_by_month_total": {
+    "2025-01": 0.9993,
+    "2025-02": 0.9893,
+    "2025-03": 0.7031,
+    "2025-04": 0.9879,
+    "2025-05": 0.9368,
+    "2025-06": 1.1094,
+    "2025-07": 0.7982,
+    "2025-08": 0.9727,
+    "2025-09": 0.9472,
+    "2025-10": 0.9522,
+    "2025-11": 0.891,
+    "2025-12": 0.8526,
+    "2026-01": 1.0591,
+    "2026-02": 0.9852,
+    "2026-03": 0.9595,
+    "2026-04": 1.0794,
+    "2026-05": 0.9043,
+    "2026-06": 1.0306,
+    "2026-07": 0.9394,
+    "2026-08": 1.0147
+  },
+  "target_attainment_2025_by_store": {
+    "Hamilton": 0.946,
+    "Mississauga": 0.9877,
+    "Online": 0.7963,
+    "Ottawa": 0.9257,
+    "Toronto - Queen Street": 0.892
+  },
+  "checks": {
+    "duplicate_rows": 12,
+    "duplicate_amount": 176.83,
+    "amount_mismatch_rows": 40,
+    "return_lines": 805,
+    "return_amount": -13190.44,
+    "dates_out_of_range": [
+      "A0009427",
+      "A0011527"
+    ],
+    "months_without_sales": [
+      "Online 2025-07"
+    ],
+    "name_variant_groups": [
+      [
+        "Lakeshore Dental Clinic",
+        "LAKESHORE DENTAL CLINIC INC.",
+        "Lakeshore Dental Clinic Inc"
+      ]
+    ],
+    "placeholder_customer": "Walk-in"
+  },
+  "story": {
+    "queen_street_feb_2025": 12613.95,
+    "queen_street_mar_2025": 2003.68,
+    "total_feb_2025": 44024.09,
+    "total_mar_2025": 37967.74,
+    "hamilton_jan_aug_2025": 84562.18,
+    "hamilton_jan_aug_2026": 58000.07,
+    "bayfront_2025": 25266.63
+  }
+}

@@ -1,0 +1,15 @@
+[
+  {"question": "Why did the Queen Street store sell so little in March 2025?", "covered": true, "expected_sections": ["Store closures"], "also_expected": "certified: Queen Street sales, February vs March 2025"},
+  {"question": "What does 'Walk-in' mean in the customer column?", "covered": true, "expected_sections": ["Column dictionary"]},
+  {"question": "Why are there no online sales in July 2025?", "covered": true, "expected_sections": ["Data notes"]},
+  {"question": "When did grocery prices change, and by how much?", "covered": true, "expected_sections": ["Pricing changes"]},
+  {"question": "What is the in-store returns policy?", "covered": true, "expected_sections": ["Returns policy"]},
+  {"question": "How are returns recorded in the file?", "covered": true, "expected_sections": ["Returns policy", "Column dictionary"]},
+  {"question": "When was the Black Friday weekend in 2025?", "covered": true, "expected_sections": ["Promotions"]},
+  {"question": "Where are online orders shipped from?", "covered": true, "expected_sections": ["Stores and channels"]},
+  {"question": "How were the sales targets set?", "covered": true, "expected_sections": ["Column dictionary"]},
+  {"question": "What is the refund policy for online orders?", "covered": false, "expected_sections": [], "note": "The returns policy only covers in-store returns."},
+  {"question": "Why did Hamilton sales drop in 2026?", "covered": false, "expected_sections": [], "note": "The document says nothing about it. The certified metrics show the drop and the lost business account (Bayfront Elementary School); the cause is not documented."},
+  {"question": "Who manages the Ottawa store?", "covered": false, "expected_sections": []},
+  {"question": "Are we planning to open a new store?", "covered": false, "expected_sections": []}
+]
