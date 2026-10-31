@@ -1,0 +1,144 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--metal-100);
+  font-weight: 600;
+}
+
+.tag {
+  color: var(--metal-400);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+}
+
+.hint {
+  color: var(--metal-400);
+  font-size: 12.5px;
+  line-height: 18px;
+}
+
+.zone {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 72px;
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--metal-500);
+  border-radius: var(--radius-md);
+  background: var(--ink-800);
+  color: var(--metal-300);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+
+.zoneIcon {
+  color: var(--metal-300);
+}
+
+.dragging {
+  border-style: solid;
+  border-color: var(--violet-400);
+  background: var(--violet-950);
+}
+
+.invalid {
+  border-color: var(--red-400);
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.browse {
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--violet-300);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.browse:disabled {
+  cursor: not-allowed;
+}
+
+.selected {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 72px;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+  border: 1px solid var(--metal-500);
+  border-radius: var(--radius-md);
+  background: var(--ink-800);
+}
+
+.fileIcon {
+  color: var(--metal-300);
+}
+
+.fileText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fileName {
+  overflow: hidden;
+  color: var(--metal-100);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileSize {
+  color: var(--metal-400);
+  font-size: 12.5px;
+  line-height: 18px;
+}
+
+.remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--metal-300);
+}
+
+.remove:hover:not(:disabled) {
+  background: var(--ink-700);
+  color: var(--metal-100);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--red-400);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.error svg {
+  margin-top: 2px;
+}
