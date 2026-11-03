@@ -1,0 +1,11 @@
+name: sales_by_period
+version: 1
+label: Sales by period
+definition: >-
+  Sum of the amount column by month, quarter or year, for the rows dated within the period,
+  first and last day included. Returns are included and the file is taken as-is (the value
+  without duplicate rows is given next to it). The axis runs from the first to the last
+  month, quarter or year of the period that has at least one row in the file. A point with no
+  row for the selection is null and drawn as a gap, never as zero: the file cannot tell "sold
+  nothing" from "data missing".
+requires: [date, amount]
