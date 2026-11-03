@@ -1,7 +1,8 @@
 """Ask the Foundry agent the same question several times, each time in a new conversation.
 
 Prints the code that Code Interpreter actually ran, its output and the answer, to see which
-definitions the agent chose. Run from the repository root, after `az login`:
+definitions the agent chose, and saves the files the answer links to in scripts/out/.
+Run from the repository root, after `az login`:
     python scripts/try_agent.py "What was our average order value in 2025?" --runs 5
 """
 
@@ -10,6 +11,7 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 
 from azure.ai.projects import AIProjectClient
 from azure.identity import DefaultAzureCredential
@@ -27,6 +29,7 @@ def readable(arguments: str) -> str:
     return json.dumps(parsed, indent=2)
 
 
+OUT = Path("scripts/out")
 CONTAINER = re.compile(r'"container_id": "(cntr_\w+)"')
 
 
@@ -48,14 +51,35 @@ def tool_calls(output_items) -> list[tuple[str, str, str, str]]:
     return calls
 
 
-def ask(openai, agent_name: str, question: str) -> tuple[list[tuple[str, str, str, str]], str]:
+def cited_files(output_items) -> list[tuple[str, str, str]]:
+    """List (container id, file id, file name) for each file the answer links to."""
+    files = []
+    for item in output_items:
+        if item.type != "message":
+            continue
+        for part in item.content:
+            for note in getattr(part, "annotations", None) or []:
+                if note.type == "container_file_citation":
+                    files.append((note.container_id, note.file_id, note.filename))
+    return files
+
+
+def save(openai, container_id: str, file_id: str, filename: str) -> Path:
+    """Download a file produced by Code Interpreter into scripts/out/ (ignored by git)."""
+    OUT.mkdir(parents=True, exist_ok=True)
+    path = OUT / Path(filename).name  # never trust a path chosen by the model
+    content = openai.containers.files.content.retrieve(file_id, container_id=container_id)
+    path.write_bytes(content.read())
+    return path
+
+
+def ask(openai, agent_name: str, question: str):
     conversation = openai.conversations.create()
-    response = openai.responses.create(
+    return openai.responses.create(
         conversation=conversation.id,
         input=question,
         extra_body={"agent_reference": {"name": agent_name, "type": "agent_reference"}},
     )
-    return tool_calls(response.output), response.output_text
 
 
 def main() -> None:
@@ -73,8 +97,9 @@ def main() -> None:
 
     for run in range(1, args.runs + 1):
         start = time.perf_counter()
-        calls, answer = ask(openai, agent_name, args.question)
+        response = ask(openai, agent_name, args.question)
         seconds = time.perf_counter() - start
+        calls = tool_calls(response.output)
         containers = {container for *_, container in calls if container}
         print(
             f"===== Run {run}: {len(calls)} tool calls, {len(containers)} containers, {seconds:.1f} s ====="
@@ -86,7 +111,9 @@ def main() -> None:
                 print("--- tool output ---")
                 print(output[:2000])
         print("--- answer ---")
-        print(answer)
+        print(response.output_text)
+        for container_id, file_id, filename in cited_files(response.output):
+            print(f"--- saved file: {save(openai, container_id, file_id, filename)} ---")
 
 
 if __name__ == "__main__":
