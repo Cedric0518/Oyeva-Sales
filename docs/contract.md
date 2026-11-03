@@ -4,7 +4,8 @@ This file is the single source of truth for what the API sends and what the fron
 Both sides read it. It changes only through a pull request labeled `contract`, and that pull
 request updates both sides or opens the issue that will (see `docs/decisions/0007`).
 
-Version: 2 (2026-11-03). Example values are the real values of the Atlas sample data.
+Version: 2 (2026-11-03). Example values are the real values of the Atlas sample data
+(`evals/data/atlas/`).
 
 ## 1. Conventions
 
