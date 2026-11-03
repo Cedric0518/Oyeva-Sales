@@ -7,6 +7,7 @@ import pandas as pd
 import pytest
 
 from api.metrics.sales_by_period import sales_by_period
+from api.metrics.sales_growth import sales_growth
 from api.metrics.sales_total import sales_total
 
 ATLAS = Path(__file__).parent.parent / "evals" / "data" / "atlas"
@@ -46,3 +47,29 @@ def test_online_july_2025_is_a_gap(orders):
     result = sales_by_period(orders, ROLES, "2025-01-01", "2025-12-31", store="Online")
     assert result["chart"]["series"][0]["values"][6] is None
     assert "Online 2025-07" in ANSWERS["checks"]["months_without_sales"]
+
+
+def test_growth_jan_to_aug_2026(orders):
+    result = sales_growth(orders, ROLES, "2026-01-01", "2026-08-31")
+    assert result["value"] == ANSWERS["growth_jan_aug_2026_vs_2025"]
+    assert result["months_left_out"] == []
+
+
+def test_growth_for_all_of_2026_compares_the_same_months(orders):
+    result = sales_growth(orders, ROLES, "2026-01-01", "2026-12-31")
+    assert result["value"] == ANSWERS["growth_jan_aug_2026_vs_2025"]
+    assert result["months_left_out"] == ["2026-09", "2026-10", "2026-11", "2026-12"]
+
+
+@pytest.mark.parametrize("store", sorted(ANSWERS["growth_jan_aug_2026_vs_2025_by_store"]))
+def test_growth_by_store_on_all_months(orders, store):
+    result = sales_growth(orders, ROLES, "2026-01-01", "2026-08-31", store=store)
+    assert result["value_all_months"] == ANSWERS["growth_jan_aug_2026_vs_2025_by_store"][store]
+
+
+def test_online_growth_leaves_out_the_missing_july(orders):
+    result = sales_growth(orders, ROLES, "2026-01-01", "2026-08-31", store="Online")
+    assert result["months_left_out"] == ["2025-07"]
+    assert result["value_all_months"] == 0.6906
+    # July left out of both years; computed separately with pandas on atlas_orders.csv
+    assert result["value"] == 0.4667
