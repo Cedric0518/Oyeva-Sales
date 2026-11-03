@@ -1,0 +1,10 @@
+name: sales_growth
+version: 1
+label: Year-over-year growth
+definition: >-
+  Sales of the period divided by sales of the same dates one year earlier, minus one
+  (0.05 means +5%), on the months that have rows in both years. A month with rows in only
+  one of the two years is left out of both years and listed, and the growth on all months is
+  given next to it. Sales follow sales_total: returns included, duplicate rows counted (the
+  value without them is given next to it). The period is one year or shorter.
+requires: [date, amount]
