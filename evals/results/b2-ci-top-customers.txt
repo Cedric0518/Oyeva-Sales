@@ -1,0 +1,150 @@
+===== Run 1 =====
+--- answer ---
+I checked the **Orders** sheet and summed **amount** by customer for orders in **2025**.
+
+### Code run
+```python
+import pandas as pd
+path='/mnt/data/assistant-HMX9DEaWdLgVDrtKen5KEi-atlas_sales.xlsx'
+df = pd.read_excel(path, sheet_name='Orders')
+df['order_date'] = pd.to_datetime(df['order_date'])
+orders_2025 = df[df['order_date'].dt.year == 2025]
+top3 = (orders_2025.groupby('customer', as_index=False)['amount']
+        .sum()
+        .sort_values('amount', ascending=False)
+        .head(3))
+print('2025 rows:', len(orders_2025))
+print(top3.to_string(index=False))
+```
+
+### Numbers produced
+- **Walk-in** — **222,151.03**
+- **Bayfront Elementary School** — **25,266.63**
+- **Pinecrest Seniors Residence** — **19,738.21**
+
+So, the **top 3 customers in 2025** were:
+
+1. **Walk-in**
+2. **Bayfront Elementary School**
+3. **Pinecrest Seniors Residence**
+===== Run 2 =====
+--- answer ---
+I checked the **Orders** sheet and summed **amount** by **customer** for **2025**.
+
+### Python code run
+```python
+import pandas as pd
+
+orders = pd.read_excel('/mnt/data/assistant-HMX9DEaWdLgVDrtKen5KEi-atlas_sales.xlsx', sheet_name='Orders')
+orders['order_date'] = pd.to_datetime(orders['order_date'])
+
+orders_2025 = orders[orders['order_date'].dt.year == 2025]
+
+summary = (
+    orders_2025.groupby('customer', as_index=False)['amount']
+    .sum()
+    .sort_values('amount', ascending=False)
+    .head(10)
+)
+
+summary
+```
+
+### Result
+| Rank | Customer | 2025 Sales |
+|---|---|---:|
+| 1 | Walk-in | 222,151.03 |
+| 2 | Bayfront Elementary School | 25,266.63 |
+| 3 | Pinecrest Seniors Residence | 19,738.21 |
+
+If you want, I can also recalculate this **excluding Walk-in** if you consider that a non-customer category.
+===== Run 3 =====
+--- answer ---
+I found the top 3 customers in 2025 by total sales amount.
+
+### Code run
+```python
+import pandas as pd
+
+path='/mnt/data/assistant-HMX9DEaWdLgVDrtKen5KEi-atlas_sales.xlsx'
+df = pd.read_excel(path, sheet_name='Orders', parse_dates=['order_date'])
+
+# filter 2025
+f = df[df['order_date'].dt.year == 2025].copy()
+
+# aggregate by customer sales amount
+cust = (f.groupby('customer', as_index=False)
+          .agg(total_amount=('amount','sum'), orders=('order_id','nunique'))
+          .sort_values(['total_amount','orders'], ascending=[False, False]))
+
+print(cust.head(10).to_string(index=False))
+```
+
+### Result
+1. **Walk-in** — **$222,151.03** across **5,926** orders  
+2. **Bayfront Elementary School** — **$25,266.63** across **52** orders  
+3. **Pinecrest Seniors Residence** — **$19,738.21** across **40** orders  
+
+If you want, I can also give the top 3 **excluding Walk-in**.
+===== Run 4 =====
+--- answer ---
+I checked the 2025 orders in the sales file and ranked customers by total sales amount.
+
+Python code I ran:
+```python
+import pandas as pd
+
+path = '/mnt/data/assistant-HMX9DEaWdLgVDrtKen5KEi-atlas_sales.xlsx'
+orders = pd.read_excel(path, sheet_name='Orders')
+orders['order_date'] = pd.to_datetime(orders['order_date'])
+
+orders_2025 = orders[orders['order_date'].dt.year == 2025].copy()
+
+summary_ex_walkin = (
+    orders_2025[orders_2025['customer'].str.lower() != 'walk-in']
+    .groupby('customer', as_index=False)['amount'].sum()
+    .sort_values('amount', ascending=False)
+)
+
+summary_ex_walkin.head(3)
+```
+
+Numbers produced:
+- Bayfront Elementary School — **25,266.63**
+- Pinecrest Seniors Residence — **19,738.21**
+- Maple Ridge Daycare — **19,495.72**
+
+Note: if you include the generic customer label **“Walk-in”**, it is the top customer in 2025 with **222,151.03** in sales.
+===== Run 5 =====
+--- answer ---
+I checked the 2025 orders and ranked customers by total sales amount.
+
+**Python code run:**
+```python
+import pandas as pd
+orders = pd.read_excel('/mnt/data/assistant-HMX9DEaWdLgVDrtKen5KEi-atlas_sales.xlsx', sheet_name='Orders')
+orders['order_date'] = pd.to_datetime(orders['order_date'])
+orders['year'] = orders['order_date'].dt.year
+
+top3 = (orders.loc[orders['year'] == 2025]
+        .groupby('customer', as_index=False)['amount'].sum()
+        .sort_values('amount', ascending=False)
+        .head(3))
+
+print(top3.to_string(index=False))
+```
+
+**Result:**
+```text
+                   customer    amount
+                    Walk-in 222151.03
+ Bayfront Elementary School  25266.63
+Pinecrest Seniors Residence  19738.21
+```
+
+**Top 3 customers in 2025:**
+1. **Walk-in** — **$222,151.03**
+2. **Bayfront Elementary School** — **$25,266.63**
+3. **Pinecrest Seniors Residence** — **$19,738.21**
+
+If you want, I can also break this down by **number of orders** or **average order value**.
