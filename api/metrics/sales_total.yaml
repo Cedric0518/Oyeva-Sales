@@ -1,0 +1,8 @@
+name: sales_total
+version: 1
+label: Sales
+definition: >-
+  Sum of the amount column for the rows dated within the period, first and last day
+  included. Returns (negative amounts) are included. The file is taken as-is: duplicate
+  rows are counted, and the value without them is given next to it.
+requires: [date, amount]

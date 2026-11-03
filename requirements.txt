@@ -10,3 +10,5 @@ azure-storage-blob==12.31.1
 azure-search-documents==12.0.0
 azure-ai-projects==2.10.0
 python-dotenv==1.2.4
+# B3: read the definition cards of the certified metrics
+pyyaml==6.0.3
