@@ -1,30 +1,21 @@
 """Certified metric: total sales over a period. The definition lives in sales_total.yaml."""
 
-from pathlib import Path
-
 import pandas as pd
-import yaml
 
-CARD = yaml.safe_load(Path(__file__).with_suffix(".yaml").read_text(encoding="utf-8"))
-METRIC = {"name": CARD["name"], "version": CARD["version"], "definition": CARD["definition"]}
+from api.metrics.common import in_period, load_card, missing_roles, refusal
+
+CARD = load_card(__file__)
 
 
 def sales_total(df: pd.DataFrame, roles: dict, start: str, end: str) -> dict:
-    missing = [role for role in CARD["requires"] if not roles.get(role)]
+    missing = missing_roles(CARD["requires"], roles)
     if missing:
-        return {
-            "status": "refused",
-            "reason": "The file has no column for: " + ", ".join(missing),
-            "missing_roles": missing,
-            "metric": METRIC,
-        }
+        return refusal(
+            CARD, "The file has no column for: " + ", ".join(missing), missing_roles=missing
+        )
 
-    dates = pd.to_datetime(df[roles["date"]])
-    first = pd.Timestamp(start)
-    after_last = pd.Timestamp(end) + pd.Timedelta(days=1)  # a time on the last day still counts
-    rows = df[(dates >= first) & (dates < after_last)]
+    rows = in_period(df, roles["date"], start, end)
     amount = roles["amount"]
-
     return {
         "status": "ok",
         "value": round(float(rows[amount].sum()), 2),
@@ -32,5 +23,5 @@ def sales_total(df: pd.DataFrame, roles: dict, start: str, end: str) -> dict:
         "rows": int(len(rows)),
         "period": {"start": start, "end": end},
         "unit": "CAD",
-        "metric": METRIC,
+        "metric": CARD["metric"],
     }
