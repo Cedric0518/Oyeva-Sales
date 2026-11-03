@@ -4,8 +4,7 @@ This file is the single source of truth for what the API sends and what the fron
 Both sides read it. It changes only through a pull request labeled `contract`, and that pull
 request updates both sides or opens the issue that will (see `docs/decisions/0007`).
 
-Version: 1 (2026-10-31). Example values are the real values of the Atlas sample data
-(`evals/data/atlas/`).
+Version: 2 (2026-11-03). Example values are the real values of the Atlas sample data.
 
 ## 1. Conventions
 
@@ -188,6 +187,8 @@ The `chart` field of a `chart` event:
   `total` (end).
 - A series may set `"style": "dashed"`.
 - `unit`: `CAD`, `%`, `count`, `days`.
+- A value in `series[].values` may be `null`: the file has no row for that point (for example a
+  month missing from an export). The frontend draws a gap, never a zero.
 
 ## 9. `GET /api/overview?dataset_id=...` (later)
 
@@ -210,3 +211,4 @@ Tiles and charts computed directly by the certified functions, without the model
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-10-31 | First version. |
+| 2 | 2026-11-03 | Chart spec: a series value may be `null` (no row in the file); the frontend draws a gap. |
