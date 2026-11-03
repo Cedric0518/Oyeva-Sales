@@ -41,7 +41,7 @@ The reasons behind these choices are written down in [docs/decisions](docs/decis
 flowchart LR
   user([User]) --> web[React frontend<br/>Azure Static Web Apps]
   web -- "REST + SSE<br/>docs/contract.md" --> api[FastAPI<br/>Azure Container Apps]
-  api --> agent[Foundry Agent Service<br/>gpt-4.1-mini]
+  api --> agent[Foundry Agent Service<br/>gpt-5.4-mini]
   agent -- function tools --> api
   agent --> ci[Code Interpreter]
   agent --> bing[Grounding with Bing]

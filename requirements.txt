@@ -4,3 +4,9 @@
 numpy==2.5.3
 pandas==3.0.5
 openpyxl==3.1.5
+# B1: reach Azure services with the signed-in identity, no keys
+azure-identity==1.27.0
+azure-storage-blob==12.31.1
+azure-search-documents==12.0.0
+azure-ai-projects==2.10.0
+python-dotenv==1.2.4
