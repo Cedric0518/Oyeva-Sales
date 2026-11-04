@@ -26,6 +26,23 @@ def refusal(card: dict, reason: str, **details) -> dict:
     return {"status": "refused", "reason": reason, **details, "metric": card["metric"]}
 
 
+def check_inputs(
+    card: dict, df: pd.DataFrame, roles: dict, store: str | None = None, extra: tuple = ()
+) -> dict | None:
+    """A refusal if a column the metric needs is missing or the store is unknown, else None."""
+    needed = card["requires"] + list(extra) + (["region"] if store else [])
+    missing = missing_roles(needed, roles)
+    if missing:
+        return refusal(
+            card, "The file has no column for: " + ", ".join(missing), missing_roles=missing
+        )
+    if store:
+        stores = sorted(df[roles["region"]].dropna().unique().tolist())
+        if store not in stores:
+            return refusal(card, f"Unknown store: {store}", stores=stores)
+    return None
+
+
 def in_period(df: pd.DataFrame, date_column: str, start: str, end: str) -> pd.DataFrame:
     """Rows dated from start to end, both days included (a time on the last day still counts)."""
     dates = pd.to_datetime(df[date_column])

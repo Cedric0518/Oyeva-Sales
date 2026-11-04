@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from api.metrics.common import in_period, load_card, missing_roles, refusal
+from api.metrics.common import check_inputs, in_period, load_card, refusal
 
 CARD = load_card(__file__)
 # granularity: (pandas period code, axis label, chart type)
@@ -25,21 +25,13 @@ def sales_by_period(
     granularity: str = "month",
     store: str | None = None,
 ) -> dict:
-    needed = CARD["requires"] + (["region"] if store else [])
-    missing = missing_roles(needed, roles)
-    if missing:
-        return refusal(
-            CARD, "The file has no column for: " + ", ".join(missing), missing_roles=missing
-        )
+    refused = check_inputs(CARD, df, roles, store)
+    if refused:
+        return refused
     if granularity not in GRANULARITIES:
         return refusal(
             CARD, f"Unknown granularity: {granularity}", granularities=list(GRANULARITIES)
         )
-    if store:
-        stores = sorted(df[roles["region"]].dropna().unique().tolist())
-        if store not in stores:
-            return refusal(CARD, f"Unknown store: {store}", stores=stores)
-
     rows = in_period(df, roles["date"], start, end)
     if rows.empty:
         return refusal(CARD, "The file has no rows in this period")
