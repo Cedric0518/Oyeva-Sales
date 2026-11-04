@@ -1,0 +1,12 @@
+name: customer_retention
+version: 1
+label: New, lost and retained customers
+definition: >-
+  Compares the customers of the period with the customers of the same dates one year
+  earlier. A customer counts in a period if it has at least one row with a positive amount:
+  a customer with only returns did not buy. Lost: bought one year earlier, not in the
+  period. New: bought in the period, not one year earlier. Retained: bought in both. Names
+  that are not a real customer ("Walk-in" and the like) are left out. Names are compared as
+  written: two spellings of one customer count as two customers (the data report flags
+  them). The period is one year or shorter.
+requires: [date, amount, customer]
