@@ -1,4 +1,5 @@
 import pandas as pd
+
 from api.metrics.target_attainment import target_attainment
 
 ROLES = {"date": "order_date", "amount": "amount", "region": "store", "target": "Targets.target"}

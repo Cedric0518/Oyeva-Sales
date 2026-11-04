@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pandas as pd
+
 from api.metrics.average_basket import average_basket
 
 DATA = Path(__file__).parent / "data"
