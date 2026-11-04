@@ -9,6 +9,9 @@ extend-exclude = ["frontend"]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["E501"]  # line length is the formatter's job
 
+[tool.ruff.lint.isort]
+known-first-party = ["api"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
