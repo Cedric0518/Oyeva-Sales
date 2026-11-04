@@ -1,0 +1,13 @@
+name: market_comparison
+version: 1
+label: Growth compared with provincial retail
+definition: >-
+  The business's year-over-year growth (sales_growth) minus the year-over-year growth of its
+  province's retail trade, excluding motor vehicle and parts dealers and gasoline stations, on
+  the same months (0.02 means 2 percentage points faster than the market). The months are those
+  sales_growth compares, up to the latest month Statistics Canada has published; later months
+  are left out and listed. The benchmark comes from table 20-10-0056-01, total retail sales,
+  unadjusted: retail trade minus the two excluded industries. Both growths are in dollars, so
+  they include price increases. If a benchmark value is not published for one of the months,
+  the comparison is refused.
+requires: [date, amount]
