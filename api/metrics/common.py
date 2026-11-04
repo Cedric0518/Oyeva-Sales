@@ -48,3 +48,25 @@ def in_period(df: pd.DataFrame, date_column: str, start: str, end: str) -> pd.Da
     dates = pd.to_datetime(df[date_column])
     after_last = pd.Timestamp(end) + pd.Timedelta(days=1)
     return df[(dates >= pd.Timestamp(start)) & (dates < after_last)]
+
+
+# Customer names that stand for "no identified customer", compared on letters and digits only.
+PLACEHOLDER_CUSTOMERS = {
+    "walkin",
+    "walkincustomer",
+    "cashcustomer",
+    "cashsale",
+    "guest",
+    "anonymous",
+    "unknown",
+    "na",
+    "none",
+}
+
+
+def is_placeholder(name) -> bool:
+    """True for an empty customer name or a name like "Walk-in" that is not a real customer."""
+    if pd.isna(name):
+        return True
+    key = "".join(ch for ch in str(name).lower() if ch.isalnum())
+    return not key or key in PLACEHOLDER_CUSTOMERS

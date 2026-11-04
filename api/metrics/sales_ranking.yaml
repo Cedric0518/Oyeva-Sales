@@ -1,0 +1,11 @@
+name: sales_ranking
+version: 1
+label: Top customers or products
+definition: >-
+  Customers or products ranked by the sum of the amount column over the period, first and
+  last day included, returns included, file taken as-is (the sales without duplicate rows are
+  given next to them). For customers, names that are not a real customer ("Walk-in", "Cash
+  customer", "Guest", "Unknown", an empty name) are left out of the ranking and their sales
+  are given apart. A share is sales divided by all sales of the period, left-out names
+  included. Equal sales are ordered by name.
+requires: [date, amount]
