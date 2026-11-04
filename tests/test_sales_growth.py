@@ -27,6 +27,7 @@ def test_growth_takes_the_file_as_is():
 
 def test_a_month_missing_in_one_year_is_left_out_of_both():
     result = sales_growth(small_growth(), ROLES, "2026-01-01", "2026-03-31", store="Online")
+    assert result["months_compared"] == ["2026-03"]
     assert result["months_left_out"] == ["2025-02"]
     assert result["value"] == -0.2
     assert result["value_all_months"] == 0.4

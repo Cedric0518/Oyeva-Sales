@@ -57,6 +57,7 @@ def sales_growth(
             now.drop_duplicates()[amount].sum(), before.drop_duplicates()[amount].sum()
         ),
         "value_all_months": growth(current[amount].sum(), previous[amount].sum()),
+        "months_compared": [str(month) for month in comparable],
         "months_left_out": left_out,
         "current": {
             "start": start,
