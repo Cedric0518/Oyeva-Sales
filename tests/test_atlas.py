@@ -5,16 +5,19 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
-from api.metrics.average_basket import average_basket
-from api.metrics.target_attainment import target_attainment
 
+from api.checks.quality import run_checks
+from api.checks.roles import recognize_roles
+from api.metrics.average_basket import average_basket
 from api.metrics.customer_retention import customer_retention
 from api.metrics.sales_by_period import sales_by_period
 from api.metrics.sales_growth import sales_growth
 from api.metrics.sales_ranking import sales_ranking
 from api.metrics.sales_total import sales_total
+from api.metrics.target_attainment import target_attainment
 
-ATLAS = Path(__file__).parent.parent / "evals" / "data" / "atlas"
+ROOT = Path(__file__).parent.parent
+ATLAS = ROOT / "evals" / "data" / "atlas"
 ANSWERS = json.loads((ATLAS / "answers.json").read_text(encoding="utf-8"))
 ROLES = {
     "date": "order_date",
@@ -137,3 +140,17 @@ def test_attainment_by_month(orders, targets):
 def test_attainment_2025_by_store_counting_missing_months_as_zero(orders, targets, store):
     result = target_attainment(orders, ROLES, "2025-01-01", "2025-12-31", targets, store)
     assert result["value_all_months"] == ANSWERS["target_attainment_2025_by_store"][store]
+
+
+def contract_upload_example() -> dict:
+    """The upload response example of docs/contract.md (the first JSON block with "checks")."""
+    text = (ROOT / "docs" / "contract.md").read_text(encoding="utf-8")
+    blocks = text.split("```json")[1:]
+    return next(json.loads(b.split("```")[0]) for b in blocks if '"checks"' in b)
+
+
+def test_roles_and_checks_match_the_contract_example(orders, targets):
+    example = contract_upload_example()
+    roles = recognize_roles(orders, {"Targets": targets})
+    assert roles == example["roles"]
+    assert run_checks(orders, roles, "2026-11-04") == example["checks"]
