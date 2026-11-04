@@ -5,6 +5,8 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+from api.metrics.average_basket import average_basket
+from api.metrics.target_attainment import target_attainment
 
 from api.metrics.customer_retention import customer_retention
 from api.metrics.sales_by_period import sales_by_period
@@ -20,12 +22,19 @@ ROLES = {
     "region": "store",
     "customer": "customer",
     "product": "product",
+    "order_id": "order_id",
+    "target": "Targets.target",
 }
 
 
 @pytest.fixture(scope="module")
 def orders():
     return pd.read_csv(ATLAS / "atlas_orders.csv", parse_dates=["order_date"])
+
+
+@pytest.fixture(scope="module")
+def targets():
+    return pd.read_excel(ATLAS / "atlas_sales.xlsx", sheet_name="Targets", engine="openpyxl")
 
 
 @pytest.mark.parametrize("year", ["2024", "2025", "2026"])
@@ -104,3 +113,27 @@ def test_customers_lost_new_and_retained_jan_to_aug(orders):
     assert counts == ANSWERS["customers_jan_aug_2025_vs_2026"]
     # Hamilton story: the school stopped buying after December 2025
     assert result["table"]["rows"][0][0] == "Bayfront Elementary School"
+
+
+@pytest.mark.parametrize("year", ["2024", "2025", "2026"])
+def test_average_basket_by_year(orders, year):
+    result = average_basket(orders, ROLES, f"{year}-01-01", f"{year}-12-31")
+    assert result["value"] == ANSWERS["average_basket_by_year"][year]
+
+
+def test_attainment_by_month(orders, targets):
+    result = target_attainment(orders, ROLES, "2025-01-01", "2026-08-31", targets)
+    by_month = {row[0]: row[3] for row in result["table"]["rows"]}
+    expected = ANSWERS["target_attainment_by_month_total"]
+    # July 2025 differs on purpose: the oracle counts the missing Online export as zero sales.
+    assert result["left_out"] == ["Online 2025-07"]
+    assert {m: v for m, v in by_month.items() if m != "2025-07"} == {
+        m: v for m, v in expected.items() if m != "2025-07"
+    }
+    assert by_month["2025-03"] == 0.7031
+
+
+@pytest.mark.parametrize("store", sorted(ANSWERS["target_attainment_2025_by_store"]))
+def test_attainment_2025_by_store_counting_missing_months_as_zero(orders, targets, store):
+    result = target_attainment(orders, ROLES, "2025-01-01", "2025-12-31", targets, store)
+    assert result["value_all_months"] == ANSWERS["target_attainment_2025_by_store"][store]
