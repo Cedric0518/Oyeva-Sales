@@ -1,0 +1,8 @@
+name: average_basket
+version: 1
+label: Average basket
+definition: >-
+  Sales of the period (returns included, file taken as-is) divided by the number of distinct
+  order numbers that have at least one line with a positive amount: an order made only of
+  returns is not an order. The value without duplicate rows is given next to it.
+requires: [date, amount, order_id]
