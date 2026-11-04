@@ -8,11 +8,18 @@ import pytest
 
 from api.metrics.sales_by_period import sales_by_period
 from api.metrics.sales_growth import sales_growth
+from api.metrics.sales_ranking import sales_ranking
 from api.metrics.sales_total import sales_total
 
 ATLAS = Path(__file__).parent.parent / "evals" / "data" / "atlas"
 ANSWERS = json.loads((ATLAS / "answers.json").read_text(encoding="utf-8"))
-ROLES = {"date": "order_date", "amount": "amount", "region": "store"}
+ROLES = {
+    "date": "order_date",
+    "amount": "amount",
+    "region": "store",
+    "customer": "customer",
+    "product": "product",
+}
 
 
 @pytest.fixture(scope="module")
@@ -73,3 +80,18 @@ def test_online_growth_leaves_out_the_missing_july(orders):
     assert result["value_all_months"] == 0.6906
     # July left out of both years; computed separately with pandas on atlas_orders.csv
     assert result["value"] == 0.4667
+
+
+def test_top_10_customers_2025_without_walk_in(orders):
+    result = sales_ranking(orders, ROLES, "2025-01-01", "2025-12-31")
+    pairs = [[row[0], row[1]] for row in result["table"]["rows"]]
+    assert pairs == ANSWERS["top10_customers_2025"]
+    assert result["top_share"] == ANSWERS["top10_share_2025"]
+    assert result["left_out"]["names"] == ["Walk-in"]
+    assert result["left_out"]["share"] == ANSWERS["walk_in_share_2025"]
+
+
+def test_top_10_products_2025(orders):
+    result = sales_ranking(orders, ROLES, "2025-01-01", "2025-12-31", by="product")
+    pairs = [[row[0], row[1]] for row in result["table"]["rows"]]
+    assert pairs == ANSWERS["top10_products_2025"]
