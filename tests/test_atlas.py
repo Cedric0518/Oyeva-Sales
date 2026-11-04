@@ -6,6 +6,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
+from api.metrics.customer_retention import customer_retention
 from api.metrics.sales_by_period import sales_by_period
 from api.metrics.sales_growth import sales_growth
 from api.metrics.sales_ranking import sales_ranking
@@ -95,3 +96,11 @@ def test_top_10_products_2025(orders):
     result = sales_ranking(orders, ROLES, "2025-01-01", "2025-12-31", by="product")
     pairs = [[row[0], row[1]] for row in result["table"]["rows"]]
     assert pairs == ANSWERS["top10_products_2025"]
+
+
+def test_customers_lost_new_and_retained_jan_to_aug(orders):
+    result = customer_retention(orders, ROLES, "2026-01-01", "2026-08-31")
+    counts = {key: result[key] for key in ("lost", "new", "retained")}
+    assert counts == ANSWERS["customers_jan_aug_2025_vs_2026"]
+    # Hamilton story: the school stopped buying after December 2025
+    assert result["table"]["rows"][0][0] == "Bayfront Elementary School"
