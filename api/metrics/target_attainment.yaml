@@ -1,0 +1,10 @@
+name: target_attainment
+version: 1
+label: Sales against target
+definition: >-
+  Sales divided by target (1.0 means the target is met), for the months of the period that
+  have a target. Sales follow sales_total: returns included, file taken as-is. Targets are
+  set by month and store. A store-month with a target but no row in the file is left out
+  of both sales and target and listed, because the file cannot tell "sold nothing" from
+  "data missing"; the attainment that counts those months as zero sales is given next to it.
+requires: [date, amount, region, target]
