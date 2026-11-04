@@ -12,5 +12,8 @@ costs. A decision is never edited after the fact; a new record replaces it and s
 | [0005](0005-no-keys.md) | No keys: managed identity everywhere | Accepted |
 | [0006](0006-prompt-shields-at-upload.md) | Scan uploads with Prompt Shields | Accepted |
 | [0007](0007-contract-in-the-repository.md) | The API contract lives in the repository | Accepted |
+| [0008](0008-dedicated-azure-resources.md) | Dedicated Azure resources for v2, in East US | Accepted |
+| [0009](0009-agent-defined-in-code.md) | The agent is defined in code, with Code Interpreter attached directly | Accepted |
+| [0010](0010-missing-data-is-not-zero.md) | Missing data is not zero | Accepted |
 
 New record: copy [`0000-template.md`](0000-template.md), take the next number, open a pull request.
