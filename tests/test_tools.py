@@ -97,3 +97,8 @@ def test_an_unknown_tool_is_an_error():
 def test_a_bad_date_goes_back_to_the_model_as_an_error():
     result = call("sales_total", session(), start="2025-02-30", end="2025-12-31")
     assert result["status"] == "error"
+
+
+def test_sales_total_of_one_store():
+    result = call("sales_total", session(), start="2025-01-01", end="2025-12-31", store="Online")
+    assert result["value"] == 180.0
