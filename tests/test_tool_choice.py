@@ -2,11 +2,17 @@ from evals.tool_choice import CASES, succeeded
 
 
 def test_a_certified_question_needs_its_function_and_no_code_interpreter():
-    assert succeeded("sales_total", ["sales_total"])
-    assert succeeded("sales_by_period", ["sales_by_period", "sales_by_period"])
-    assert not succeeded("sales_total", ["sales_total", "code_interpreter"])
-    assert not succeeded("sales_total", ["code_interpreter"])
-    assert not succeeded("sales_total", [])
+    assert succeeded(("sales_total",), ["sales_total"])
+    assert succeeded(("sales_by_period",), ["sales_by_period", "sales_by_period"])
+    assert not succeeded(("sales_total",), ["sales_total", "code_interpreter"])
+    assert not succeeded(("sales_total",), ["code_interpreter"])
+    assert not succeeded(("sales_total",), [])
+
+
+def test_question_10_needs_the_number_of_the_store():
+    expected = ("sales_total", "sales_by_period")
+    assert succeeded(expected, ["sales_total"], "Queen Street sold CAD 2,003.68.", "2003.68")
+    assert not succeeded(expected, ["sales_total"], "Queen Street sold CAD 37,967.74.", "2003.68")
 
 
 def test_a_control_question_needs_no_certified_function():
