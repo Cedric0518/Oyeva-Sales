@@ -61,8 +61,9 @@ def function_tool(card: dict, use_for: str, properties: dict) -> dict:
 TOOLS = [
     function_tool(
         sales_total.CARD,
-        "Total sales over a period. Use it for any question about how much was sold.",
-        {"start": START, "end": END},
+        "Total sales over a period, for the whole business or one store. Use it for any "
+        "question about how much was sold.",
+        {"start": START, "end": END, "store": STORE},
     ),
     function_tool(
         sales_by_period.CARD,
