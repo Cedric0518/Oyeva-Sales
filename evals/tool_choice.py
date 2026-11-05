@@ -25,42 +25,56 @@ RUNS = 3
 CODE = "code_interpreter"
 RESULTS = Path("evals/results")
 
-# (id, question, expected certified function); None for a control: no certified function.
+# (id, question, certified functions that answer it, text the answer must contain).
+# Expected None: a control, no certified function. Question 10 amended before measure v2.
 CASES = [
-    ("1", "How much did we sell in 2025?", "sales_total"),
-    ("2", "Show our monthly sales for 2025.", "sales_by_period"),
+    ("1", "How much did we sell in 2025?", ("sales_total",), None),
+    ("2", "Show our monthly sales for 2025.", ("sales_by_period",), None),
     (
         "3",
         "Compared with the same months of 2025, how did our sales change from January to "
         "August 2026?",
-        "sales_growth",
+        ("sales_growth",),
+        None,
     ),
-    ("4", "Who were our top 10 customers in 2025?", "sales_ranking"),
-    ("5", "What were our 5 best-selling products in 2025?", "sales_ranking"),
+    ("4", "Who were our top 10 customers in 2025?", ("sales_ranking",), None),
+    ("5", "What were our 5 best-selling products in 2025?", ("sales_ranking",), None),
     (
         "6",
         "How many customers did we lose from January-August 2025 to January-August 2026?",
-        "customer_retention",
+        ("customer_retention",),
+        None,
     ),
-    ("7", "What was our average order value in 2025?", "average_basket"),
-    ("8", "Did we hit our sales targets in 2025?", "target_attainment"),
+    ("7", "What was our average order value in 2025?", ("average_basket",), None),
+    ("8", "Did we hit our sales targets in 2025?", ("target_attainment",), None),
     (
         "9",
         "Are we doing better than the Ontario retail market from January to August 2026?",
-        "market_comparison",
+        ("market_comparison",),
+        None,
     ),
-    ("10", "How much did the Toronto - Queen Street store sell in March 2025?", "sales_by_period"),
-    ("C1", "Which day of the week had the highest sales in 2025?", None),
-    ("C2", "What was our profit margin in 2025?", None),
+    (
+        "10",
+        "How much did the Toronto - Queen Street store sell in March 2025?",
+        ("sales_total", "sales_by_period"),
+        "2003.68",
+    ),
+    ("C1", "Which day of the week had the highest sales in 2025?", None, None),
+    ("C2", "What was our profit margin in 2025?", None, None),
 ]
 
 
-def succeeded(expected: str | None, tools: list[str]) -> bool:
-    """A certified question needs its function and no Code Interpreter; a control, no function."""
+def succeeded(
+    expected: tuple | None, tools: list[str], answer: str = "", must_contain: str | None = None
+) -> bool:
+    """A certified question needs one of its functions, no Code Interpreter, and the expected
+    text if any (thousands separators ignored); a control needs no certified function."""
     functions = [tool for tool in tools if tool != CODE]
     if expected is None:
         return not functions
-    return expected in functions and CODE not in tools
+    if CODE in tools or not any(tool in expected for tool in functions):
+        return False
+    return must_contain is None or must_contain in answer.replace(",", "")
 
 
 def git(*args: str) -> str:
@@ -82,13 +96,13 @@ def main() -> None:
     data = atlas()
 
     runs = []
-    for case, question, expected in CASES:
+    for case, question, expected, must_contain in CASES:
         for run in range(1, RUNS + 1):
             start = time.perf_counter()
             answer = ask(openai, agent_name, question, data)
             seconds = round(time.perf_counter() - start, 1)
             tools = [name for name, *_ in answer.calls] + [CODE] * len(answer.code)
-            ok = succeeded(expected, tools)
+            ok = succeeded(expected, tools, answer.text, must_contain)
             print(f"{case:>3} run {run}: {'ok' if ok else 'NO'}  {', '.join(tools) or 'no tool'}")
             runs.append(
                 {
@@ -96,6 +110,7 @@ def main() -> None:
                     "run": run,
                     "question": question,
                     "expected": expected,
+                    "must_contain": must_contain,
                     "tools": tools,
                     "succeeded": ok,
                     "calls": [[name, arguments] for name, arguments, _ in answer.calls],
@@ -124,7 +139,7 @@ def main() -> None:
     path.write_text(json.dumps(report, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
 
     print()
-    for case, _, _ in CASES:
+    for case, *_ in CASES:
         mine = [run for run in runs if run["case"] == case]
         print(f"{case:>3}: {sum(run['succeeded'] for run in mine)}/{RUNS}")
     print(f"\nCertified questions: {total}/{len(certified)} runs with the expected function")
