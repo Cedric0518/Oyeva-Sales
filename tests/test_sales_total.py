@@ -32,3 +32,19 @@ def test_refuses_without_an_amount_column():
     result = sales_total(small_sales(), roles, "2025-01-01", "2025-12-31")
     assert result["status"] == "refused"
     assert result["missing_roles"] == ["amount"]
+
+
+def test_sales_of_one_store_and_the_result_says_which():
+    roles = {**ROLES, "region": "store"}
+    whole = sales_total(small_sales(), roles, "2025-01-01", "2025-12-31")
+    online = sales_total(small_sales(), roles, "2025-01-01", "2025-12-31", store="Online")
+    assert whole["store"] is None
+    assert online["store"] == "Online"
+    assert online["value"] == 180.0
+
+
+def test_refuses_an_unknown_store_with_the_list_of_stores():
+    roles = {**ROLES, "region": "store"}
+    result = sales_total(small_sales(), roles, "2025-01-01", "2025-12-31", store="Queen Street")
+    assert result["status"] == "refused"
+    assert result["stores"] == ["Main", "Online"]
