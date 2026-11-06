@@ -5,30 +5,8 @@
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  padding: var(--space-6);
-  overflow-y: auto;
-}
-
-.placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-2);
-  padding: var(--space-6);
-  border: 1px dashed var(--ink-700);
-  border-radius: var(--radius-lg);
-  color: var(--metal-300);
-}
-
-.placeholderTitle {
-  color: var(--metal-100);
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 22px;
+  min-width: 0;
+  min-height: 0;
 }
 
 .muted {
@@ -38,6 +16,8 @@
 }
 
 .preview {
+  align-self: stretch;
+  margin-top: var(--space-3);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

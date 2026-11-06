@@ -15,9 +15,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "echarts": "^6.1.0",
     "lucide-react": "^1.66.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "react-markdown": "^10.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

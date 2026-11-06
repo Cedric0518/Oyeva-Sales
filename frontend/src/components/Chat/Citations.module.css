@@ -1,0 +1,92 @@
+.chipWrap {
+  position: relative;
+  display: inline-block;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  margin: 0 2px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16px;
+  vertical-align: 1px;
+}
+
+.document {
+  border-color: var(--amber-400);
+  color: var(--amber-400);
+}
+
+.web {
+  border-color: var(--metal-400);
+  color: var(--metal-300);
+}
+
+button.chip:hover {
+  background: var(--ink-800);
+}
+
+.waiting {
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 320px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-md);
+  background: var(--ink-800);
+  box-shadow: var(--shadow-raised);
+  font-size: 13px;
+  line-height: 20px;
+  white-space: normal;
+}
+
+.popoverTitle {
+  color: var(--metal-100);
+  font-weight: 600;
+}
+
+.popoverMeta {
+  color: var(--metal-400);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.excerpt {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--amber-400);
+  color: var(--metal-200);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+  font-weight: 500;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
