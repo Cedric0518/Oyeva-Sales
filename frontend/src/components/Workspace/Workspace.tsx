@@ -1,24 +1,19 @@
-import { MessagesSquare } from 'lucide-react';
 import type { Cell, Dataset } from '../../api/types';
 import { cx } from '../../cx';
+import { ChatPanel } from '../Chat/ChatPanel';
 import { DataReport } from '../DataReport/DataReport';
 import styles from './Workspace.module.css';
 
-/** After the upload: the dataset panel on the left, the chat on the right (F2). */
-export function Workspace({ dataset }: { dataset: Dataset }) {
+/** After the upload: the dataset panel on the left, the chat on the right. */
+export function Workspace({ dataset, mockBackend = false }: { dataset: Dataset; mockBackend?: boolean }) {
   return (
     <div className={styles.workspace}>
       <DataReport dataset={dataset} />
-      <section className={styles.main} aria-label="Conversation">
-        <div className={styles.placeholder}>
-          <MessagesSquare size={24} aria-hidden="true" />
-          <h2 className={styles.placeholderTitle}>Questions open here soon</h2>
-          <p className={styles.muted}>
-            The chat comes with the next milestone (F2). For now, review the data report on the left.
-          </p>
-        </div>
-        <FilePreview dataset={dataset} />
-      </section>
+      <div className={styles.main}>
+        <ChatPanel dataset={dataset} mockBackend={mockBackend}>
+          <FilePreview dataset={dataset} />
+        </ChatPanel>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,130 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 6, 8, 0.6);
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(520px, 100vw);
+  border-left: 1px solid var(--ink-700);
+  background: var(--ink-850);
+  box-shadow: var(--shadow-raised);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--ink-700);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--metal-300);
+}
+
+.close:hover {
+  background: var(--ink-800);
+  color: var(--metal-100);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.subject {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.subjectTitle {
+  color: var(--metal-100);
+  font-weight: 600;
+}
+
+.text {
+  color: var(--metal-200);
+}
+
+.muted {
+  color: var(--metal-400);
+  font-size: 12.5px;
+  line-height: 18px;
+}
+
+.label {
+  margin-bottom: var(--space-2);
+  color: var(--metal-400);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.02em;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-2) var(--space-4);
+}
+
+.facts dt {
+  color: var(--metal-400);
+  font-size: 12.5px;
+}
+
+.facts dd {
+  color: var(--metal-100);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.code {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--ink-700);
+  border-radius: var(--radius-md);
+  background: var(--ink-950);
+  color: var(--metal-200);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 20px;
+  white-space: pre;
+  overflow-x: auto;
+}

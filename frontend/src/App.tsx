@@ -36,7 +36,7 @@ export function App({ client, mockBackend = false, onNewSession }: AppProps) {
         {state.screen === 'upload' ? (
           <UploadPanel onLoaded={(dataset) => dispatch({ type: 'dataset_loaded', dataset })} />
         ) : (
-          <Workspace dataset={state.dataset} />
+          <Workspace dataset={state.dataset} mockBackend={mockBackend} />
         )}
       </AppShell>
     </ApiContext>
