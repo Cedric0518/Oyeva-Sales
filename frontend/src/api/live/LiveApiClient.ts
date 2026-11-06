@@ -1,10 +1,12 @@
 import { ApiError, NETWORK_ERROR_MESSAGE, type ApiClient, type UploadRequest } from '../client';
-import type { ContractErrorCode, Dataset } from '../types';
+import { readEvents } from '../sse';
+import type { ChatEvent, ChatRequest, ContractErrorCode, Dataset } from '../types';
 
 const CONTRACT_CODES: ReadonlySet<string> = new Set<ContractErrorCode>([
   'unsupported_format',
   'file_too_large',
   'unreadable_file',
+  'invalid_request',
   'missing_session',
   'dataset_not_found',
   'rate_limited',
@@ -41,6 +43,34 @@ export class LiveApiClient implements ApiClient {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sample: 'atlas' }),
     });
+  }
+
+  async *chat(request: ChatRequest, signal?: AbortSignal): AsyncGenerator<ChatEvent> {
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      Accept: 'text/event-stream',
+      'X-Session-Id': this.sessionId,
+    });
+    let response: Response;
+    try {
+      response = await this.fetchFn(`${this.baseUrl}/api/chat`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(request),
+        signal,
+      });
+    } catch {
+      if (signal?.aborted) return;
+      throw new ApiError('network', NETWORK_ERROR_MESSAGE);
+    }
+    if (!response.ok) throw await errorFrom(response);
+    if (!response.body) throw new ApiError('internal', 'The server sent an empty answer. Please try again.');
+    try {
+      yield* readEvents(response.body);
+    } catch {
+      if (signal?.aborted) return;
+      throw new ApiError('network', 'The connection was lost while the answer was being written. Please ask again.');
+    }
   }
 
   private async request<T>(path: string, init: RequestInit): Promise<T> {
