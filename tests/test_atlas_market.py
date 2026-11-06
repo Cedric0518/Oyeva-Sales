@@ -30,6 +30,10 @@ def test_market_comparison_jan_to_aug_2026(orders):
     assert result["market_growth"] == 0.0466
     assert result["value"] == 0.004
     assert result["published"] == "2026-08"
+    chart = result["chart"]
+    assert chart["x"]["values"] == result["months_compared"]
+    assert [len(series["values"]) for series in chart["series"]] == [8, 8]
+    assert chart["unit"] == "%"
 
 
 def test_online_is_compared_with_the_market_without_july(orders):

@@ -50,6 +50,28 @@ def test_gap_is_company_growth_minus_market_growth():
     assert result["published"] == "2026-03"
 
 
+def test_the_chart_gives_each_month_for_the_business_and_the_market():
+    # January: 220 against 100; February: 180 against 100; March: 210 against 200.
+    # Market: 670, 650 and 720 against 600.
+    assert compare()["chart"] == {
+        "type": "line",
+        "title": "Growth against the same month one year earlier",
+        "x": {"label": "Month", "values": ["2026-01", "2026-02", "2026-03"]},
+        "series": [
+            {"name": "Your sales", "values": [120.0, 80.0, 5.0]},
+            {"name": "Ontario retail", "values": [11.67, 8.33, 20.0]},
+        ],
+        "unit": "%",
+    }
+
+
+def test_the_chart_of_a_store_has_its_own_months():
+    chart = compare(store="Online")["chart"]
+    assert chart["x"]["values"] == ["2026-03"]
+    assert chart["series"][0]["values"] == [-20.0]
+    assert chart["series"][1]["values"] == [20.0]
+
+
 def test_months_not_yet_published_are_left_out_of_both():
     result = compare(reference={**REFERENCE, "published": "2026-02"})
     assert result["months_not_published"] == ["2026-03"]
