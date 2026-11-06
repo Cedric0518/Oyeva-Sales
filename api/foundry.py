@@ -14,6 +14,14 @@ from azure.identity import DefaultAzureCredential
 from api.reading import SESSION_FILE, ReadFile
 
 
+def setting(name: str) -> str:
+    """A setting of the API, from its environment (.env locally, the container app in Azure)."""
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"The setting {name} is missing from the environment of the API.")
+    return value
+
+
 def upload_session_file(openai, content: bytes) -> str:
     """Upload the sales rows for Code Interpreter; the container sees them as SESSION_FILE."""
     return openai.files.create(file=(SESSION_FILE, content), purpose="assistants").id
@@ -27,13 +35,13 @@ class Foundry:
 
     @property
     def agent_name(self) -> str:
-        return os.environ["AGENT_NAME"]
+        return setting("AGENT_NAME")
 
     def client(self):
         with self._lock:
             if self._client is None:
                 project = AIProjectClient(
-                    endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"],
+                    endpoint=setting("FOUNDRY_PROJECT_ENDPOINT"),
                     credential=DefaultAzureCredential(),
                 )
                 openai = project.get_openai_client()
