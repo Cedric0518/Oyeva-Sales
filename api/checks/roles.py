@@ -15,11 +15,14 @@ SYNONYMS = {
                  "invoice", "transactionid", "receipt", "nocommande", "numerocommande",
                  "commande", "facture"],
     "customer": ["customer", "customername", "client", "nomclient", "account", "buyer"],
-    "product": ["product", "productname", "item", "itemname", "sku", "produit", "article"],
+    "product": ["product", "productname", "item", "itemname", "sku", "produit", "article",
+                "description", "itemdescription", "productdescription", "designation"],
     "region": ["store", "storename", "region", "branch", "location", "shop", "outlet",
                "magasin", "succursale", "boutique"],
 }  # fmt: skip
 NUMERIC_ROLES = {"amount", "unit_price", "quantity"}
+# Roles that name something. Real exports often write them as numbers (customer 13085, store 4).
+IDENTIFIER_ROLES = {"order_id", "customer", "product", "region"}
 TARGET_NAMES = ["target", "goal", "budget", "objective", "objectif", "cible"]
 MONTH_NAMES = ["month", "mois", "period", "periode", "date"]
 
@@ -37,12 +40,22 @@ def is_date(column: pd.Series) -> bool:
     return len(parsed) > 0 and parsed.notna().mean() >= 0.9
 
 
+def whole_numbers(column: pd.Series) -> bool:
+    if pd.api.types.is_bool_dtype(column):
+        return False
+    values = column.dropna()
+    return len(values) > 0 and bool((values == values.round()).all())
+
+
 def fits(role: str, column: pd.Series) -> bool:
     if role == "date":
         return is_date(column)
     if role in NUMERIC_ROLES:
         return pd.api.types.is_numeric_dtype(column)
-    return not pd.api.types.is_numeric_dtype(column) or role == "order_id"
+    if pd.api.types.is_numeric_dtype(column):
+        # A number names something only if it is whole: 13085 can be a customer, 12.5 cannot.
+        return role in IDENTIFIER_ROLES and whole_numbers(column)
+    return True
 
 
 def find(df: pd.DataFrame, names: list[str], taken: set, test) -> str | None:

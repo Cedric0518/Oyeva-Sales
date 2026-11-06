@@ -60,3 +60,10 @@ def test_target_in_another_sheet():
     assert roles["target"] == "Goals.goal"
     targets = read_targets(sheets, roles)
     assert targets.to_dict("records") == [{"month": "2025-01", "store": "Main", "target": 100}]
+
+
+def test_a_customer_number_names_a_customer_but_a_decimal_does_not():
+    whole = pd.DataFrame({"date": ["2025-01-02"], "amount": [10.0], "Customer ID": [13085.0]})
+    assert recognize_roles(whole)["customer"] == "Customer ID"
+    decimal = pd.DataFrame({"date": ["2025-01-02"], "amount": [10.0], "customer": [12.5]})
+    assert recognize_roles(decimal)["customer"] is None
