@@ -15,5 +15,6 @@ costs. A decision is never edited after the fact; a new record replaces it and s
 | [0008](0008-dedicated-azure-resources.md) | Dedicated Azure resources for v2, in East US | Accepted |
 | [0009](0009-agent-defined-in-code.md) | The agent is defined in code, with Code Interpreter attached directly | Accepted |
 | [0010](0010-missing-data-is-not-zero.md) | Missing data is not zero | Accepted |
+| [0011](0011-session-data-set-by-the-api.md) | The API sets the session data; one Foundry conversation per chat | Accepted |
 
 New record: copy [`0000-template.md`](0000-template.md), take the next number, open a pull request.
