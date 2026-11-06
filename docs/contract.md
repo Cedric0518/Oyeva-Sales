@@ -4,7 +4,7 @@ This file is the single source of truth for what the API sends and what the fron
 Both sides read it. It changes only through a pull request labeled `contract`, and that pull
 request updates both sides or opens the issue that will (see `docs/decisions/0007`).
 
-Version: 2 (2026-11-03). Example values are the real values of the Atlas sample data
+Version: 3 (2026-11-05). Example values are the real values of the Atlas sample data
 (`evals/data/atlas/`).
 
 ## 1. Conventions
@@ -14,9 +14,11 @@ Version: 2 (2026-11-03). Example values are the real values of the Atlas sample 
 - **Session**: the frontend creates a `session_id` (UUID v4) when the page loads, keeps it in memory
   only, and sends it in the `X-Session-Id` header on every call. Reloading the page starts a new
   session. A missing or invalid header returns `missing_session`.
-- **Errors**: HTTP status plus `{"error": {"code": "...", "message": "..."}}`. Codes:
-  `unsupported_format`, `file_too_large`, `unreadable_file`, `missing_session`,
-  `dataset_not_found`, `rate_limited`, `internal`. The `message` can be shown to the user as is.
+- **Errors**: HTTP status plus `{"error": {"code": "...", "message": "..."}}`. Codes and statuses:
+  `unsupported_format` (415), `file_too_large` (413), `unreadable_file` (422),
+  `invalid_request` (422: a missing field, an unknown province or sample), `missing_session` (400),
+  `dataset_not_found` (404), `rate_limited` (429: an answer is already being written for this
+  session), `internal` (500). The `message` can be shown to the user as is.
 - **Limits**: sales file 20 MB; context document 5 MB and 50 pages.
 
 ## 2. Provenance values
@@ -115,6 +117,13 @@ Response `200`:
 ```
 
 - A check's `status` is `ok`, `warning` or `error`. `amount` is in dollars, or `null`.
+- `checks` has the eight checks above, in that order, and may have more, each shown as it comes:
+  `derived_amount` (second in the list: the file has quantity and unit price but no amount, so
+  the API adds the column `amount (quantity x unit price)`, listed in `columns` and `roles`),
+  `unreadable_dates` (values of the date column that are not dates, such as a "Total" row) and
+  `ambiguous_dates` (dates such as 03/04/2025 that read both ways, and the order chosen).
+- `sheets` is `[]` for a CSV file. With several sheets, the rows come from the sheet with a date
+  and an amount and the most rows; a target column is looked for in the other sheets.
 - `roles`: the column the backend recognized for each role, or `null`. If `date` or `amount` is
   `null`, certified metrics refuse to run, and the report says so.
 - `context` is `null` when no document was sent. `mode`: `full` (whole document in the
@@ -158,7 +167,11 @@ dealers and gasoline stations"`, `"source": "Statistics Canada, table 20-10-0056
 
 Rules:
 
-- `start` comes first; `done` or `error` comes last.
+- `start` comes first; `done` or `error` comes last. If the assistant cannot start at all,
+  `start` carries `"conversation_id": null` and `error` follows.
+- The `conversation_id` of `start` can differ from the one sent: after an answer that ended with
+  `error`, or for a conversation about another file, the API starts a new conversation. The
+  frontend always sends the latest one it received.
 - Several `chart`, `table` and `step` events are allowed per answer; at most one `citations` and
   one `sources`.
 - `covered: false` in `citations` means the user's document does not cover the question.
@@ -213,3 +226,4 @@ Tiles and charts computed directly by the certified functions, without the model
 |---|---|---|
 | 1 | 2026-10-31 | First version. |
 | 2 | 2026-11-03 | Chart spec: a series value may be `null` (no row in the file); the frontend draws a gap. |
+| 3 | 2026-11-05 | Error code `invalid_request` and the HTTP status of each code; checks `derived_amount`, `unreadable_dates`, `ambiguous_dates`; `sheets` empty for CSV; a new `conversation_id` in `start` after an error. No change needed in the frontend. |
