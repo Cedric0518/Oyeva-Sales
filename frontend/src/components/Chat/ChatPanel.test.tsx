@@ -136,6 +136,27 @@ describe('ChatPanel with the live client', () => {
     expect(requests[0]?.dataset_id).toBe(UPLOAD_EXAMPLE.dataset_id);
   });
 
+  it('labels an answer from Code Interpreter as Exploratory and opens the code that ran', async () => {
+    const code = "df.groupby(df.order_date.dt.day_name()).amount.sum().idxmax()";
+    const { user } = renderChat(
+      fakeApi(async function* (): AsyncGenerator<ChatEvent> {
+        yield { type: 'start', data: { conversation_id: 'conv_1', message_id: 'msg_01' } };
+        yield { type: 'step', data: { id: 's1', tool: 'code', label: 'Code Interpreter', status: 'done', code } };
+        yield { type: 'text', data: { delta: 'Friday sells the most.' } };
+        yield { type: 'done', data: {} };
+      }),
+    );
+
+    await ask(user, 'Which day of the week sells the most?');
+    expect(screen.getByText('Based on')).toBeInTheDocument();
+    expect(screen.getByText('Exploratory')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /1 step/ }));
+    await user.click(screen.getByRole('button', { name: 'View the code' }));
+    const drawer = screen.getByRole('dialog', { name: 'How was this calculated' });
+    expect(within(drawer).getByRole('region', { name: 'Code' })).toHaveTextContent(code);
+  });
+
   it('shows a network failure in the answer, and lets the user ask again', async () => {
     const { user } = renderChat(
       fakeApi(async function* (): AsyncGenerator<ChatEvent> {

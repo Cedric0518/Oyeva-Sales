@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { scenarioEvents } from '../api/mock/chatScenarios';
 import type { ChartEvent, ChatEvent } from '../api/types';
 import { conversationReducer, EMPTY, type AssistantTurn, type Conversation } from './conversation';
+import { answerProvenance } from './labels';
 
 function play(events: ChatEvent[], state: Conversation = EMPTY, question = 'How much did I sell in 2025?'): Conversation {
   let next = conversationReducer(state, { type: 'asked', id: `q${state.turns.length}`, text: question });
@@ -107,5 +108,19 @@ describe('conversationReducer', () => {
 
     expect(answerOf(state)).toMatchObject({ status: 'error', notice: 'Could not reach the server.', text: 'You sold' });
     expect(state.streaming).toBe(false);
+  });
+});
+
+describe('answerProvenance', () => {
+  it('labels the explanation from the tools that ran, without failed ones or repeats', () => {
+    expect(
+      answerProvenance([
+        { tool: 'certified', status: 'done' },
+        { tool: 'code', status: 'done' },
+        { tool: 'certified', status: 'done' },
+        { tool: 'web', status: 'failed' },
+        { tool: 'documents', status: 'running' },
+      ]),
+    ).toEqual(['certified', 'exploratory', 'documents']);
   });
 });

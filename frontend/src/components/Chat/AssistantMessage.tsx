@@ -1,9 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import type { AssistantTurn } from '../../chat/conversation';
+import { answerProvenance } from '../../chat/labels';
 import { Notice } from '../ui/Notice';
 import { AnswerText } from './AnswerText';
 import { DataTable } from './DataTable';
+import { ProvenanceBadge } from './ProvenanceBadge';
 import { ResultCard } from './ResultCard';
 import { BlockedNotice, DocumentsPanel, NotCoveredNotice, WebSourcesBox } from './SourcesPanels';
 import { StepsTimeline } from './StepsTimeline';
@@ -18,10 +20,19 @@ export function AssistantMessage({ answer }: { answer: AssistantTurn }) {
   const streaming = answer.status === 'streaming';
   const running = answer.steps.findLast((step) => step.status === 'running');
   const citations = answer.citations;
+  const basis = answerProvenance(answer.steps);
 
   return (
     <article className={styles.answer} aria-label="Answer" aria-busy={streaming}>
       <StepsTimeline steps={answer.steps} />
+      {answer.text && basis.length > 0 && (
+        <div className={styles.basis}>
+          <span className={styles.basisLabel}>Based on</span>
+          {basis.map((provenance) => (
+            <ProvenanceBadge key={provenance} provenance={provenance} />
+          ))}
+        </div>
+      )}
       {answer.text && (
         <AnswerText
           text={answer.text}
