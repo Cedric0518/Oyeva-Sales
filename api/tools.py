@@ -153,6 +153,22 @@ RUNNERS = {
 }
 
 
+# Name, version and definition of each certified metric, for the steps shown to the user.
+METRICS = {
+    module.CARD["name"]: module.CARD["metric"]
+    for module in (
+        sales_total,
+        sales_by_period,
+        sales_growth,
+        sales_ranking,
+        customer_retention,
+        average_basket,
+        target_attainment,
+        market_comparison,
+    )
+}
+
+
 def run_tool(name: str, arguments: str, data: Dataset) -> dict:
     """Run the function the model asked for. A mistake goes back to the model as a result."""
     if name not in RUNNERS:
