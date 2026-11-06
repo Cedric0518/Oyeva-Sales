@@ -1,0 +1,809 @@
+{
+ "label": "v3",
+ "date": "2026-11-06T13:12:19+00:00",
+ "commit": "c3ba155",
+ "uncommitted_changes": false,
+ "agent": "oyeva-sales-agent",
+ "agent_version": "7",
+ "model": "gpt-5.4-mini",
+ "runs_per_question": 3,
+ "certified_runs_with_expected_function": "30/30",
+ "runs": [
+  {
+   "case": "1",
+   "run": 1,
+   "question": "How much did we sell in 2025?",
+   "expected": [
+    "sales_total"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.3,
+   "answer": "In 2025, we sold **CAD 649,958.80** in total; **without duplicate rows, it would be CAD 649,865.65**. The file has **duplicate rows**, so both figures are relevant."
+  },
+  {
+   "case": "1",
+   "run": 2,
+   "question": "How much did we sell in 2025?",
+   "expected": [
+    "sales_total"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 6.8,
+   "answer": "In 2025, we sold **CAD 649,958.80** in total for the whole business; **CAD 649,865.65** without the duplicate rows.  \nThe file has **12 duplicate rows**, so both figures are relevant."
+  },
+  {
+   "case": "1",
+   "run": 3,
+   "question": "How much did we sell in 2025?",
+   "expected": [
+    "sales_total"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 11.2,
+   "answer": "In 2025, we sold **CAD 649,958.80** in total; **CAD 649,865.65** excluding duplicate rows. The file has **12 duplicate rows**, so the main total counts them as-is."
+  },
+  {
+   "case": "2",
+   "run": 1,
+   "question": "Show our monthly sales for 2025.",
+   "expected": [
+    "sales_by_period"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_by_period"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_by_period",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"granularity\":\"month\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 9.7,
+   "answer": "Here are your monthly sales for 2025 for the whole business. Sales dipped to a low in March, then recovered strongly through summer and finished with the highest months in November and December.  \n\nNote: the file has duplicate rows, so the table also shows sales without duplicates; the differences are small in May, July, August, November, and December."
+  },
+  {
+   "case": "2",
+   "run": 2,
+   "question": "Show our monthly sales for 2025.",
+   "expected": [
+    "sales_by_period"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_by_period"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_by_period",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"granularity\":\"month\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 8.8,
+   "answer": "Here are our monthly sales for 2025, for the whole business. Sales rose unevenly through the year, with the lowest month in March and the strongest month in November; December was also very strong.  \n\nThere are duplicate rows in the file, so the table also shows sales without duplicates — the differences are small in May, July, August, November, and December."
+  },
+  {
+   "case": "2",
+   "run": 3,
+   "question": "Show our monthly sales for 2025.",
+   "expected": [
+    "sales_by_period"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_by_period"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_by_period",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"granularity\":\"month\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.8,
+   "answer": "Here are our monthly sales for 2025, total business, in CAD. Sales were lowest in March and then climbed, with the strongest months in November and December. The file has duplicate rows, so the table also shows the sales without duplicates where that differs: May, July, August, November, and December."
+  },
+  {
+   "case": "3",
+   "run": 1,
+   "question": "Compared with the same months of 2025, how did our sales change from January to August 2026?",
+   "expected": [
+    "sales_growth"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_growth"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_growth",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.8,
+   "answer": "Compared with January to August 2025, sales were up 5.06% in January to August 2026. That was 420,781.22 versus 400,531.31 in the same months a year earlier. No months were left out, and the file’s duplicate rows did not change the result."
+  },
+  {
+   "case": "3",
+   "run": 2,
+   "question": "Compared with the same months of 2025, how did our sales change from January to August 2026?",
+   "expected": [
+    "sales_growth"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_growth"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_growth",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.2,
+   "answer": "From January to August 2026, sales were up 5.06% compared with the same months in 2025. That’s based on comparable sales of 420,781.22 versus 400,531.31. No months were left out, and the file’s duplicate rows did not change the result here."
+  },
+  {
+   "case": "3",
+   "run": 3,
+   "question": "Compared with the same months of 2025, how did our sales change from January to August 2026?",
+   "expected": [
+    "sales_growth"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_growth"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_growth",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 7.6,
+   "answer": "From January to August 2026, sales were up 5.06% compared with the same months of 2025. That’s based on comparable sales of 420,781.22 versus 400,531.31 last year. No months were left out, and the file’s duplicate rows do not change the result here."
+  },
+  {
+   "case": "4",
+   "run": 1,
+   "question": "Who were our top 10 customers in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"customer\",\"n\":10,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.3,
+   "answer": "Here are the top 10 customers in 2025:\n\n1. Bayfront Elementary School — CAD 25,266.63  \n2. Pinecrest Seniors Residence — CAD 19,738.21  \n3. Maple Ridge Daycare — CAD 19,495.72  \n4. Lakeshore Dental Clinic — CAD 17,596.75  \n5. Byward Market Bistro — CAD 15,998.29  \n6. Northgate Library Branch — CAD 13,519.00  \n7. Cooksville Medical Group — CAD 13,249.03  \n8. Locke Street Cafe — CAD 12,772.74  \n9. Kingsway Law Office — CAD 11,895.60  \n10. Harbour Physio Centre — CAD 9,700.60  \n\nTogether, these 10 customers made up 24.5% of 2025 sales. Note that “Walk-in” was excluded from the customer ranking and is reported separately by the file."
+  },
+  {
+   "case": "4",
+   "run": 2,
+   "question": "Who were our top 10 customers in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"customer\",\"n\":10,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.9,
+   "answer": "Here were the top 10 customers in 2025:\n\n1. Bayfront Elementary School  \n2. Pinecrest Seniors Residence  \n3. Maple Ridge Daycare  \n4. Lakeshore Dental Clinic  \n5. Byward Market Bistro  \n6. Northgate Library Branch  \n7. Cooksville Medical Group  \n8. Locke Street Cafe  \n9. Kingsway Law Office  \n10. Harbour Physio Centre  \n\nA warning applies here: the file flags **Lakeshore Dental Clinic** as appearing in **3 spellings**, so that customer may be split across variants in the data. Also, **Walk-in** sales were excluded from the customer ranking and reported separately by the file."
+  },
+  {
+   "case": "4",
+   "run": 3,
+   "question": "Who were our top 10 customers in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"customer\",\"n\":10,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.7,
+   "answer": "In 2025, your top 10 customers were Bayfront Elementary School, Pinecrest Seniors Residence, Maple Ridge Daycare, Lakeshore Dental Clinic, Byward Market Bistro, Northgate Library Branch, Cooksville Medical Group, Locke Street Cafe, Kingsway Law Office, and Harbour Physio Centre.  \n\nBayfront Elementary School was the top customer, and the top 10 together accounted for 24.5% of sales. Note that “Walk-in” is excluded from customer rankings and was reported separately."
+  },
+  {
+   "case": "5",
+   "run": 1,
+   "question": "What were our 5 best-selling products in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"product\",\"n\":5,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 6.4,
+   "answer": "In 2025, your 5 best-selling products were Backpack, Printer paper, 5 reams, Coffee beans 1 kg, Ink cartridge, black, and Olive oil 1 L. The top five together made up 38.55% of 2025 sales.\n\nOne note: Olive oil 1 L has duplicate rows in the file, so its sales are 34,899.44 CAD as taken from the file, or 34,872.16 CAD without duplicates."
+  },
+  {
+   "case": "5",
+   "run": 2,
+   "question": "What were our 5 best-selling products in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"product\",\"n\":5,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 8.6,
+   "answer": "In 2025, your 5 best-selling products were Backpack, Printer paper, 5 reams, Coffee beans 1 kg, Ink cartridge, black, and Olive oil 1 L. They were led by Backpack, with sales of CAD 59,465.13.  \n\nThere were no duplicate-row differences for the top 4 items; Olive oil 1 L had CAD 34,899.44 in the file versus CAD 34,872.16 without duplicates, and the file contains 12 duplicate rows overall."
+  },
+  {
+   "case": "5",
+   "run": 3,
+   "question": "What were our 5 best-selling products in 2025?",
+   "expected": [
+    "sales_ranking"
+   ],
+   "must_contain": null,
+   "tools": [
+    "sales_ranking"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_ranking",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"by\":\"product\",\"n\":5,\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 6.0,
+   "answer": "In 2025, your 5 best-selling products were Backpack, Printer paper, 5 reams, Coffee beans 1 kg, Ink cartridge, black, and Olive oil 1 L. Backpack led with CAD 59,465.13, followed by Printer paper, 5 reams at CAD 56,070.00 and Coffee beans 1 kg at CAD 52,146.43.\n\nOne thing to note: Olive oil 1 L has duplicate rows in the file, so the ranking shows CAD 34,899.44 as-is and CAD 34,872.16 without duplicates."
+  },
+  {
+   "case": "6",
+   "run": 1,
+   "question": "How many customers did we lose from January-August 2025 to January-August 2026?",
+   "expected": [
+    "customer_retention"
+   ],
+   "must_contain": null,
+   "tools": [
+    "customer_retention"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "customer_retention",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.5,
+   "answer": "From January–August 2025 to January–August 2026, we lost 420 customers. We also gained 514 new customers and retained 529. The biggest lost customers by prior sales were Bayfront Elementary School and Spadina Print Studio."
+  },
+  {
+   "case": "6",
+   "run": 2,
+   "question": "How many customers did we lose from January-August 2025 to January-August 2026?",
+   "expected": [
+    "customer_retention"
+   ],
+   "must_contain": null,
+   "tools": [
+    "customer_retention"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "customer_retention",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 7.4,
+   "answer": "From January–August 2025 to January–August 2026, we lost **420 customers**. We also gained **514 new** customers and **529 retained** customers. The biggest lost-customer sales one year earlier were **Bayfront Elementary School** and **Spadina Print Studio**."
+  },
+  {
+   "case": "6",
+   "run": 3,
+   "question": "How many customers did we lose from January-August 2025 to January-August 2026?",
+   "expected": [
+    "customer_retention"
+   ],
+   "must_contain": null,
+   "tools": [
+    "customer_retention"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "customer_retention",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.8,
+   "answer": "From January–August 2025 to January–August 2026, we lost **420 customers**. We also gained **514 new** customers and retained **529**. The biggest lost customers by sales one year earlier were **Bayfront Elementary School** and **Spadina Print Studio**."
+  },
+  {
+   "case": "7",
+   "run": 1,
+   "question": "What was our average order value in 2025?",
+   "expected": [
+    "average_basket"
+   ],
+   "must_contain": null,
+   "tools": [
+    "average_basket"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "average_basket",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.6,
+   "answer": "Our average order value in 2025 was CAD 53.60 for the whole business. There’s no duplicate-row difference here, so the file gives the same value with and without duplicates."
+  },
+  {
+   "case": "7",
+   "run": 2,
+   "question": "What was our average order value in 2025?",
+   "expected": [
+    "average_basket"
+   ],
+   "must_contain": null,
+   "tools": [
+    "average_basket"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "average_basket",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.7,
+   "answer": "In 2025, our average order value was **CAD 53.60** for the whole business.  \nThere were **397 orders with only returns** in the period, and there’s **no duplicate-row effect** here because the value is the same with and without duplicates."
+  },
+  {
+   "case": "7",
+   "run": 3,
+   "question": "What was our average order value in 2025?",
+   "expected": [
+    "average_basket"
+   ],
+   "must_contain": null,
+   "tools": [
+    "average_basket"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "average_basket",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.6,
+   "answer": "In 2025, our average order value was **CAD 53.60**. The file has duplicate rows, but they do not change this result here: the value without duplicates is also **CAD 53.60**."
+  },
+  {
+   "case": "8",
+   "run": 1,
+   "question": "Did we hit our sales targets in 2025?",
+   "expected": [
+    "target_attainment"
+   ],
+   "must_contain": null,
+   "tools": [
+    "target_attainment"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "target_attainment",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.4,
+   "answer": "Not quite. In 2025, overall sales attainment was 0.9278 against target, or 0.9226 when months with missing sales data are counted as zero; that means we finished below target for the year. The strongest month was June, while March was the weakest. There’s a warning for Online 2025-07, which was left out because the file has a month without sales there."
+  },
+  {
+   "case": "8",
+   "run": 2,
+   "question": "Did we hit our sales targets in 2025?",
+   "expected": [
+    "target_attainment"
+   ],
+   "must_contain": null,
+   "tools": [
+    "target_attainment"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "target_attainment",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 8.7,
+   "answer": "In 2025, we did not fully hit our sales targets overall: attainment was 0.9278, or 0.9226 if you count the left-out month as zero sales. The strongest month was June, above target at 1.1094, while March was the weakest at 0.7031.  \n\nWarning: Online 2025-07 was left out because the file has a month without sales there, so the file can’t tell whether that was zero sales or missing data."
+  },
+  {
+   "case": "8",
+   "run": 3,
+   "question": "Did we hit our sales targets in 2025?",
+   "expected": [
+    "target_attainment"
+   ],
+   "must_contain": null,
+   "tools": [
+    "target_attainment"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "target_attainment",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 6.4,
+   "answer": "In 2025, we did not hit our sales targets overall: attainment was 0.9278, or 0.9226 when months with missing sales data are counted as zero. The weakest month was March, while June was the only month clearly above target.\n\nA warning applies: Online 2025-07 was left out because that store-month has no sales rows, so the file can’t distinguish “sold nothing” from missing data."
+  },
+  {
+   "case": "9",
+   "run": 1,
+   "question": "Are we doing better than the Ontario retail market from January to August 2026?",
+   "expected": [
+    "market_comparison"
+   ],
+   "must_contain": null,
+   "tools": [
+    "market_comparison"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "market_comparison",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.9,
+   "answer": "Yes — from January to August 2026, the business did better than the Ontario retail market by 0.4 percentage points. The business’s year-over-year growth was +5.06%, versus +4.66% for Ontario retail trade excluding motor vehicle and parts dealers and gasoline stations, based on Statistics Canada table 20-10-0056-01. Both growths are in dollars, so they include price increases."
+  },
+  {
+   "case": "9",
+   "run": 2,
+   "question": "Are we doing better than the Ontario retail market from January to August 2026?",
+   "expected": [
+    "market_comparison"
+   ],
+   "must_contain": null,
+   "tools": [
+    "market_comparison"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "market_comparison",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.6,
+   "answer": "Yes — from January to August 2026, the business is doing better than the Ontario retail market by 0.4 percentage points. Our year-over-year sales growth was 5.06%, versus 4.66% for Ontario retail trade excluding motor vehicle and parts dealers and gasoline stations, based on Statistics Canada table 20-10-0056-01. Both growth rates are in dollars, so they include price increases."
+  },
+  {
+   "case": "9",
+   "run": 3,
+   "question": "Are we doing better than the Ontario retail market from January to August 2026?",
+   "expected": [
+    "market_comparison"
+   ],
+   "must_contain": null,
+   "tools": [
+    "market_comparison"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "market_comparison",
+     "{\"start\":\"2026-01-01\",\"end\":\"2026-08-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.8,
+   "answer": "Yes — from January to August 2026, you were doing better than the Ontario retail market by 0.004, or 0.4 percentage points. Your year-over-year sales growth was 0.0506, versus 0.0466 for Ontario retail trade excluding motor vehicle and parts dealers and gasoline stations. This benchmark is from Statistics Canada table 20-10-0056-01, and both growth rates include price increases."
+  },
+  {
+   "case": "10",
+   "run": 1,
+   "question": "How much did the Toronto - Queen Street store sell in March 2025?",
+   "expected": [
+    "sales_total",
+    "sales_by_period"
+   ],
+   "must_contain": "2003.68",
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-03-01\",\"end\":\"2025-03-31\",\"store\":\"Toronto - Queen Street\"}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.5,
+   "answer": "Toronto - Queen Street sold CAD 2,003.68 in March 2025. There were no duplicate rows affecting this total."
+  },
+  {
+   "case": "10",
+   "run": 2,
+   "question": "How much did the Toronto - Queen Street store sell in March 2025?",
+   "expected": [
+    "sales_total",
+    "sales_by_period"
+   ],
+   "must_contain": "2003.68",
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-03-01\",\"end\":\"2025-03-31\",\"store\":\"Toronto - Queen Street\"}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.8,
+   "answer": "The Toronto - Queen Street store sold **CAD 2,003.68** in **March 2025**. There were **109 rows** in that period, and there were **no duplicate-row differences** for this result."
+  },
+  {
+   "case": "10",
+   "run": 3,
+   "question": "How much did the Toronto - Queen Street store sell in March 2025?",
+   "expected": [
+    "sales_total",
+    "sales_by_period"
+   ],
+   "must_contain": "2003.68",
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": true,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-03-01\",\"end\":\"2025-03-31\",\"store\":\"Toronto - Queen Street\"}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 5.0,
+   "answer": "The Toronto - Queen Street store sold **CAD 2,003.68** in **March 2025**. There were no duplicate-row differences for this period, so the total is the same with and without duplicates."
+  },
+  {
+   "case": "C1",
+   "run": 1,
+   "question": "Which day of the week had the highest sales in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [
+    "code_interpreter"
+   ],
+   "succeeded": true,
+   "calls": [],
+   "code": [
+    "import pandas as pd\ndf = pd.read_csv('/mnt/data/assistant-RdrRCdLzcFyYioEH6YVqUV-sales_data.csv')\ndf['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')\ndf = df[(df['order_date'] >= '2025-01-01') & (df['order_date'] <= '2025-12-31')]\ndf['weekday'] = df['order_date'].dt.day_name()\nres = df.groupby('weekday', dropna=False)['amount'].sum().sort_values(ascending=False)\nres\n"
+   ],
+   "stopped": null,
+   "seconds": 4.7,
+   "answer": "Exploratory: In 2025, **Friday** had the highest sales. I used the session sales file and included the rows dated in 2025 as-is, so duplicate rows and returns are counted, and the result reflects the file’s recorded amounts."
+  },
+  {
+   "case": "C1",
+   "run": 2,
+   "question": "Which day of the week had the highest sales in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [
+    "code_interpreter"
+   ],
+   "succeeded": true,
+   "calls": [],
+   "code": [
+    "import pandas as pd\ndf = pd.read_csv('/mnt/data/assistant-RdrRCdLzcFyYioEH6YVqUV-sales_data.csv')\ndf['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')\ndf_2025 = df[(df['order_date'] >= '2025-01-01') & (df['order_date'] <= '2025-12-31')].copy()\ndf_2025['dow'] = df_2025['order_date'].dt.day_name()\nres = df_2025.groupby('dow', dropna=False)['amount'].sum().sort_values(ascending=False)\nres\n"
+   ],
+   "stopped": null,
+   "seconds": 3.9,
+   "answer": "Exploratory: in 2025, Friday had the highest sales. I included returns and the file as-is, with duplicate rows counted; if you want, I can also break this down by store or show the full weekday ranking."
+  },
+  {
+   "case": "C1",
+   "run": 3,
+   "question": "Which day of the week had the highest sales in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [
+    "code_interpreter"
+   ],
+   "succeeded": true,
+   "calls": [],
+   "code": [
+    "from collections import defaultdict\nimport pandas as pd\n\ndf = pd.read_csv('/mnt/data/assistant-RdrRCdLzcFyYioEH6YVqUV-sales_data.csv')\ndf['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')\ndf = df[(df['order_date'] >= '2025-01-01') & (df['order_date'] <= '2025-12-31')].copy()\ndf['dow'] = df['order_date'].dt.day_name()\nsales = df.groupby('dow', as_index=False)['amount'].sum()\norder = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']\nsales['dow'] = pd.Categorical(sales['dow'], categories=order, ordered=True)\nsales = sales.sort_values('dow')\nsales\n"
+   ],
+   "stopped": null,
+   "seconds": 5.5,
+   "answer": "In 2025, Friday had the highest sales."
+  },
+  {
+   "case": "C2",
+   "run": 1,
+   "question": "What was our profit margin in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [],
+   "succeeded": true,
+   "calls": [],
+   "code": [],
+   "stopped": null,
+   "seconds": 4.7,
+   "answer": "I can’t answer profit margin from this file. The sales data includes sales amounts, orders, customers, products, and targets, but it does not include costs or profit, so there’s no way to calculate profit margin reliably from the available data."
+  },
+  {
+   "case": "C2",
+   "run": 2,
+   "question": "What was our profit margin in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [],
+   "succeeded": true,
+   "calls": [],
+   "code": [],
+   "stopped": null,
+   "seconds": 3.6,
+   "answer": "I can’t determine profit margin from this file. The available certified metrics cover sales, growth, baskets, customers, and targets, but there’s no cost or profit column to calculate margin."
+  },
+  {
+   "case": "C2",
+   "run": 3,
+   "question": "What was our profit margin in 2025?",
+   "expected": null,
+   "must_contain": null,
+   "tools": [
+    "sales_total"
+   ],
+   "succeeded": false,
+   "calls": [
+    [
+     "sales_total",
+     "{\"start\":\"2025-01-01\",\"end\":\"2025-12-31\",\"store\":null}"
+    ]
+   ],
+   "code": [],
+   "stopped": null,
+   "seconds": 6.9,
+   "answer": "I can’t determine profit margin from this file alone. The certified data here gives sales, orders, customers, and targets, but it does not include costs or profit, which are required to calculate margin.\n\nFor 2025, total sales were CAD 649,958.80, or CAD 649,865.65 without duplicate rows. The file has 12 duplicate rows, so that warning applies to the sales figure."
+  }
+ ]
+}
