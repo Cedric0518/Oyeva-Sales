@@ -184,6 +184,20 @@
   }
 }
 
+/* "Based on": the provenance of the explanation, from the tools that ran. */
+.basis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.basisLabel {
+  color: var(--metal-400);
+  font-size: 12.5px;
+  line-height: 18px;
+}
+
 /* ---------- Steps ---------- */
 
 .steps {
@@ -247,14 +261,34 @@
 }
 
 .stepStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
   color: var(--metal-400);
 }
 
-.done svg {
+.codeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border: 1px dashed var(--violet-400);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--violet-300);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.codeButton:hover {
+  background: var(--ink-800);
+}
+
+.done > svg {
   color: var(--green-400);
 }
 
-.failed svg,
+.failed > svg,
 .failed .stepStatus {
   color: var(--red-400);
 }
