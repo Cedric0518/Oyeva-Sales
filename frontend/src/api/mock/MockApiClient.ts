@@ -1,11 +1,14 @@
 import { ApiError, type ApiClient, type UploadRequest } from '../client';
-import type { ContextDocument, Dataset } from '../types';
+import type { ChatEvent, ChatRequest, ContextDocument, Dataset } from '../types';
+import { scenarioEvents, scenarioFor } from './chatScenarios';
 import { contextFormatOf, validateContextFile, validateSalesFile } from '../../upload/validation';
 import { EXAMPLE_CONTEXT, UPLOAD_EXAMPLE } from './uploadExample';
 
 export interface MockOptions {
   /** How long an upload takes, so the loading state shows. */
   delayMs?: number;
+  /** The time between two chat events, picked between these bounds (30 to 60 ms by default). */
+  chatDelayMs?: [number, number];
 }
 
 const STATUS = { unsupported_format: 415, file_too_large: 413 } as const;
@@ -21,9 +24,12 @@ function wait(ms: number): Promise<void> {
  */
 export class MockApiClient implements ApiClient {
   private readonly delayMs: number;
+  private readonly chatDelayMs: [number, number];
+  private messages = 0;
 
-  constructor({ delayMs = 900 }: MockOptions = {}) {
+  constructor({ delayMs = 900, chatDelayMs = [30, 60] }: MockOptions = {}) {
     this.delayMs = delayMs;
+    this.chatDelayMs = chatDelayMs;
   }
 
   async health(): Promise<{ status: 'ok' }> {
@@ -59,6 +65,17 @@ export class MockApiClient implements ApiClient {
     const dataset = structuredClone(UPLOAD_EXAMPLE);
     dataset.context = { ...structuredClone(EXAMPLE_CONTEXT), name: 'atlas_context.md', format: 'md', converted: false };
     return dataset;
+  }
+
+  /** The answer of the scenario that the question's words pick (chatScenarios.ts). */
+  async *chat(request: ChatRequest, signal?: AbortSignal): AsyncGenerator<ChatEvent> {
+    this.messages += 1;
+    const [low, high] = this.chatDelayMs;
+    for (const event of scenarioEvents(scenarioFor(request.message), this.messages)) {
+      if (signal?.aborted) return;
+      await wait(low + Math.random() * (high - low));
+      yield event;
+    }
   }
 }
 

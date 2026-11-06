@@ -74,3 +74,70 @@ describe('LiveApiClient', () => {
     expect(error).toMatchObject({ code: 'network', message: NETWORK_ERROR_MESSAGE });
   });
 });
+
+describe('LiveApiClient.chat', () => {
+  const REQUEST = { dataset_id: 'ds_3f9a1c2b7d4e8f01', conversation_id: null, message: 'How much did I sell in 2025?' };
+
+  function streamResponse(chunks: string[], status = 200): Response {
+    const encoder = new TextEncoder();
+    const body = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const chunk of chunks) controller.enqueue(encoder.encode(chunk));
+        controller.close();
+      },
+    });
+    return new Response(body, { status, headers: { 'Content-Type': 'text/event-stream' } });
+  }
+
+  async function collect(events: AsyncIterable<unknown>): Promise<unknown[]> {
+    const all: unknown[] = [];
+    for await (const event of events) all.push(event);
+    return all;
+  }
+
+  it('posts the message with the session header and reads the events as they arrive', async () => {
+    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
+      streamResponse([
+        'event: start\ndata: {"conversation_id": "conv_8c1e", "message_id": "msg_01"}\n\nevent: te',
+        'xt\ndata: {"delta": "You sold $649,958.80 in 2025."}\n\n',
+        'event: done\ndata: {}\n\n',
+      ]),
+    );
+
+    const events = await collect(clientWith(fetchFn).chat(REQUEST));
+
+    expect(events).toEqual([
+      { type: 'start', data: { conversation_id: 'conv_8c1e', message_id: 'msg_01' } },
+      { type: 'text', data: { delta: 'You sold $649,958.80 in 2025.' } },
+      { type: 'done', data: {} },
+    ]);
+    const [url, init] = fetchFn.mock.calls[0] ?? [];
+    expect(url).toBe('http://localhost:8000/api/chat');
+    expect(init?.method).toBe('POST');
+    expect(JSON.parse(String(init?.body))).toEqual(REQUEST);
+    const headers = new Headers(init?.headers);
+    expect(headers.get('X-Session-Id')).toBe(SESSION);
+    expect(headers.get('Accept')).toBe('text/event-stream');
+  });
+
+  it('throws the contract error when the API refuses the request', async () => {
+    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
+      jsonResponse({ error: { code: 'dataset_not_found', message: 'Upload your file again.' } }, 404),
+    );
+    const error = await collect(clientWith(fetchFn).chat(REQUEST)).catch((e) => e);
+    expect(error).toMatchObject({ code: 'dataset_not_found', message: 'Upload your file again.', status: 404 });
+  });
+
+  it('reports a network failure in plain words', async () => {
+    const fetchFn = vi.fn<typeof fetch>().mockRejectedValue(new TypeError('Failed to fetch'));
+    const error = await collect(clientWith(fetchFn).chat(REQUEST)).catch((e) => e);
+    expect(error).toMatchObject({ code: 'network', message: NETWORK_ERROR_MESSAGE });
+  });
+
+  it('ends quietly when the user aborts', async () => {
+    const controller = new AbortController();
+    controller.abort();
+    const fetchFn = vi.fn<typeof fetch>().mockRejectedValue(new DOMException('Aborted', 'AbortError'));
+    expect(await collect(clientWith(fetchFn).chat(REQUEST, controller.signal))).toEqual([]);
+  });
+});

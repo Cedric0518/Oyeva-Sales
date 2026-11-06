@@ -1,4 +1,4 @@
-import type { Dataset, ErrorCode, ProvinceCode } from './types';
+import type { ChatEvent, ChatRequest, Dataset, ErrorCode, ProvinceCode } from './types';
 
 export interface UploadRequest {
   file: File;
@@ -11,6 +11,11 @@ export interface ApiClient {
   health(): Promise<{ status: 'ok' }>;
   upload(request: UploadRequest): Promise<Dataset>;
   sample(): Promise<Dataset>;
+  /**
+   * One message, answered as a stream of events (docs/contract.md, section 7). The stream ends
+   * with `done` or `error`. A failure before the stream starts throws an ApiError.
+   */
+  chat(request: ChatRequest, signal?: AbortSignal): AsyncIterable<ChatEvent>;
 }
 
 /** An error the user can read: `message` is shown as is (docs/contract.md, section 1). */

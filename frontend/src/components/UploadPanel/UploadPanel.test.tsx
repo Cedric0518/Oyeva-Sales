@@ -12,6 +12,7 @@ function fakeApi(overrides: Partial<ApiClient> = {}): ApiClient {
     health: vi.fn(async () => ({ status: 'ok' as const })),
     upload: vi.fn(async () => structuredClone(UPLOAD_EXAMPLE)),
     sample: vi.fn(async () => structuredClone(UPLOAD_EXAMPLE)),
+    chat: vi.fn(async function* () {}),
     ...overrides,
   };
 }
