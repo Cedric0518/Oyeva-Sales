@@ -4,7 +4,7 @@ This file is the single source of truth for what the API sends and what the fron
 Both sides read it. It changes only through a pull request labeled `contract`, and that pull
 request updates both sides or opens the issue that will (see `docs/decisions/0007`).
 
-Version: 3 (2026-11-05). Example values are the real values of the Atlas sample data
+Version: 4 (2026-11-06). Example values are the real values of the Atlas sample data
 (`evals/data/atlas/`).
 
 ## 1. Conventions
@@ -200,7 +200,8 @@ The `chart` field of a `chart` event:
 - `waterfall`: a `measure` array gives each bar's role: `absolute` (start), `relative` (change),
   `total` (end).
 - A series may set `"style": "dashed"`.
-- `unit`: `CAD`, `%`, `count`, `days`.
+- `unit`: `CAD`, `%`, `count`, `days`. With `%`, values are percentages: 5.06 means 5.06%
+  (unlike `delta` in section 9, a fraction).
 - A value in `series[].values` may be `null`: the file has no row for that point (for example a
   month missing from an export). The frontend draws a gap, never a zero.
 
@@ -227,3 +228,4 @@ Tiles and charts computed directly by the certified functions, without the model
 | 1 | 2026-10-31 | First version. |
 | 2 | 2026-11-03 | Chart spec: a series value may be `null` (no row in the file); the frontend draws a gap. |
 | 3 | 2026-11-05 | Error code `invalid_request` and the HTTP status of each code; checks `derived_amount`, `unreadable_dates`, `ambiguous_dates`; `sheets` empty for CSV; a new `conversation_id` in `start` after an error. No change needed in the frontend. |
+| 4 | 2026-11-06 | Chart spec: with `unit: "%"`, values are percentages. The `market` chart of `market_comparison` uses it. No change needed in the frontend. |
