@@ -161,3 +161,30 @@ def test_files_the_api_cannot_read(content, name, code):
     with pytest.raises(ReadError) as error:
         read_sales_file(content, name, "ON")
     assert error.value.code == code
+
+
+def test_a_kaggle_style_export_capitals_windows_encoding_product_line_and_territory():
+    text = (
+        "ORDERNUMBER,QUANTITYORDERED,PRICEEACH,SALES,ORDERDATE,PRODUCTLINE,PRODUCTCODE,"
+        "CUSTOMERNAME,COUNTRY,TERRITORY\n"
+        "10107,30,95.7,2871,2/24/2003 0:00,Motorcycles,S10_1678,Land of Toys Inc.,USA,NA\n"
+        "10121,34,81.35,2765.9,5/7/2003 0:00,Motorcycles,S10_1678,Reims Collectables,France,EMEA\n"
+        "10134,41,94.74,3884.34,7/1/2003 0:00,Classic Cars,S10_1949,Lyon Souveniers,France,EMEA\n"
+        "10145,45,100,5205.27,8/25/2003 0:00,Classic Cars,S10_1949,Société Générale,France,EMEA\n"
+    )
+    result = read(text, "sales_data_sample.csv", "cp1252")
+    roles = result.response["roles"]
+    assert roles["product"] == "PRODUCTCODE"  # PRODUCTLINE groups products
+    assert roles["region"] == "TERRITORY"
+    assert roles["order_id"] == "ORDERNUMBER"
+    assert result.data.df["ORDERDATE"].iloc[0] == pd.Timestamp("2003-02-24")
+    assert "ambiguous_dates" not in warnings(result)  # 2/24 tells month from day
+    assert warnings(result)["amount_mismatch"] == "1 row"  # 45 x 100 is not 5205.27
+    assert result.data.df["CUSTOMERNAME"].iloc[3] == "Société Générale"
+
+
+def test_the_description_tells_the_agent_the_checks_with_a_warning(atlas):
+    assert "- Checks with a warning:" in atlas.description
+    assert "  - Months without sales: Online: 2025-07." in atlas.description
+    assert "  - Duplicate rows: 12 duplicate rows." in atlas.description
+    assert "Returns" not in atlas.description  # an ok check is not listed

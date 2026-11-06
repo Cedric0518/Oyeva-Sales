@@ -18,8 +18,12 @@ SYNONYMS = {
     "product": ["product", "productname", "item", "itemname", "sku", "produit", "article",
                 "description", "itemdescription", "productdescription", "designation"],
     "region": ["store", "storename", "region", "branch", "location", "shop", "outlet",
-               "magasin", "succursale", "boutique"],
+               "magasin", "succursale", "boutique", "territory", "territoire", "district",
+               "zone", "country", "pays"],
 }  # fmt: skip
+# Words that rule a column out of a role whatever its name: a product line or category groups
+# products, it is not a product (PRODUCTLINE next to PRODUCTCODE).
+NOT_FOR = {"product": ["line", "categ", "type", "group", "family", "class", "famille", "gamme"]}
 NUMERIC_ROLES = {"amount", "unit_price", "quantity"}
 # Roles that name something. Real exports often write them as numbers (customer 13085, store 4).
 IDENTIFIER_ROLES = {"order_id", "customer", "product", "region"}
@@ -74,7 +78,8 @@ def recognize_roles(orders: pd.DataFrame, other_sheets: dict | None = None) -> d
     """The column found for each role, or None. The target is "Sheet.column" in another sheet."""
     roles, taken = {}, set()
     for role, names in SYNONYMS.items():
-        column = find(orders, names, taken, lambda c, r=role: fits(r, c))
+        ruled_out = {c for c in orders.columns if any(w in key(c) for w in NOT_FOR.get(role, []))}
+        column = find(orders, names, taken | ruled_out, lambda c, r=role: fits(r, c))
         roles[role] = column
         if column:
             taken.add(column)
