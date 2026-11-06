@@ -332,9 +332,16 @@ def clean(text, limit: int = 60) -> str:
 
 
 def describe(
-    file_name: str, sheet: str, df: pd.DataFrame, roles: dict, region: str, today: pd.Timestamp
+    file_name: str,
+    sheet: str,
+    df: pd.DataFrame,
+    roles: dict,
+    region: str,
+    today: pd.Timestamp,
+    checks: list[dict],
 ) -> str:
-    """What the agent is told about the session file (structured input "dataset")."""
+    """What the agent is told about the session file (structured input "dataset"): the agent
+    never sees the upload report otherwise, so the checks with a warning are listed too."""
     where = f", sheet {clean(sheet)}" if sheet else ""
     lines = [f"- File: {clean(file_name, 100)}{where}, {len(df):,} rows."]
     if roles.get("date"):
@@ -358,9 +365,13 @@ def describe(
         more = f", and {len(stores) - MAX_LISTED} more" if len(stores) > MAX_LISTED else ""
         lines.append(f"- Stores (column {clean(roles['region'])}): {named}{more}.")
     lines.append(f"- Province: {PROVINCES[region][0]} ({region}).")
+    warnings = [c for c in checks if c["status"] != "ok"]
+    if warnings:
+        lines.append("- Checks with a warning:")
+        lines += [f"  - {c['name']}: {clean(c['detail'], 200)}." for c in warnings]
     lines.append(
-        f"- In Code Interpreter the same rows are in {SESSION_FILE}, read the same way as the "
-        "certified functions read them."
+        f"- In Code Interpreter the same rows are in the file whose name ends with "
+        f"{SESSION_FILE}, read the same way as the certified functions read them."
     )
     return "\n".join(lines)
 
@@ -426,5 +437,6 @@ def read_sales_file(
         "context": None,
     }
     data = Dataset(df, roles, read_targets(others, roles), region, reference)
-    description = describe(file_name, main if kind == "excel" else "", df, roles, region, day)
+    sheet = main if kind == "excel" else ""
+    description = describe(file_name, sheet, df, roles, region, day, checks)
     return ReadFile(response, data, session_csv(df), description)
