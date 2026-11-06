@@ -1,0 +1,16 @@
+# Files never sent to the image build: settings and secrets, local environments, outputs,
+# the frontend (deployed on Static Web Apps), Git history.
+.env
+.env.*
+!.env.example
+.venv/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+.git/
+.github/
+.claude/
+frontend/
+scripts/out/
+evals/results/
+.DS_Store
