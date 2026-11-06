@@ -39,7 +39,15 @@ function base(spec: ChartSpec): Option {
     backgroundColor: 'transparent',
     color: SERIES_COLORS,
     textStyle: { fontFamily: 'Inter, system-ui, sans-serif' },
-    grid: { left: 16, right: 24, top: spec.series.length > 1 ? 40 : 16, bottom: 40, containLabel: true },
+    // ECharts 6: axis labels and axis names stay inside this rect (replaces the old `containLabel`).
+    grid: {
+      left: 8,
+      right: 16,
+      top: spec.series.length > 1 ? 40 : 12,
+      bottom: 4,
+      outerBoundsMode: 'same',
+      outerBoundsContain: 'all',
+    },
     tooltip: {
       trigger: 'axis',
       valueFormatter: (v: number | null) => (v === null || v === undefined ? 'no data' : formatValue(spec.unit, v)),
