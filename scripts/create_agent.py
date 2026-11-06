@@ -1,8 +1,11 @@
 """Create a new version of the agent: Code Interpreter and the certified metrics as functions.
 
 The instructions come from api/agent_instructions.md and the function tools from api/tools.py,
-so that each version can be traced to a commit. The sample sales file is uploaded once, then
-reused by Code Interpreter. Run from the repository root, after `az login`:
+so that each version can be traced to a commit. No file is attached: each request gives the
+session file and its description through two structured inputs (docs/decisions/0011):
+- sales_file_id: the Foundry file Code Interpreter mounts, the session rows as sales_data.csv;
+- dataset: what the API read in the file, placed in the instructions.
+Run from the repository root, after `az login`:
     python -m scripts.create_agent
 """
 
@@ -15,6 +18,7 @@ from azure.ai.projects.models import (
     CodeInterpreterTool,
     FunctionTool,
     PromptAgentDefinition,
+    StructuredInputDefinition,
 )
 from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
@@ -22,16 +26,18 @@ from dotenv import load_dotenv
 from api.tools import TOOLS
 
 INSTRUCTIONS = Path("api/agent_instructions.md")
-SAMPLE = Path("evals/data/atlas/atlas_sales.xlsx")
-
-
-def sample_file_id(openai) -> str:
-    """Return the id of the uploaded sample file, uploading it the first time."""
-    for file in openai.files.list(purpose="assistants"):
-        if file.filename == SAMPLE.name:
-            return file.id
-    with SAMPLE.open("rb") as handle:
-        return openai.files.create(file=handle, purpose="assistants").id
+STRUCTURED_INPUTS = {
+    "sales_file_id": StructuredInputDefinition(
+        description="Foundry file id of the session's sales rows, for Code Interpreter.",
+        required=True,
+        schema={"type": "string"},
+    ),
+    "dataset": StructuredInputDefinition(
+        description="What the API read in the session's sales file: rows, dates, columns.",
+        required=True,
+        schema={"type": "string"},
+    ),
+}
 
 
 def main() -> None:
@@ -39,10 +45,8 @@ def main() -> None:
     project = AIProjectClient(
         endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"], credential=DefaultAzureCredential()
     )
-    openai = project.get_openai_client()
-    file_id = sample_file_id(openai)
     code_interpreter = CodeInterpreterTool(
-        container=AutoCodeInterpreterToolParam(file_ids=[file_id])
+        container=AutoCodeInterpreterToolParam(file_ids=["{{sales_file_id}}"])
     )
     functions = [FunctionTool(tool) for tool in TOOLS]
     agent = project.agents.create_version(
@@ -51,11 +55,12 @@ def main() -> None:
             model=os.environ["AGENT_MODEL"],
             instructions=INSTRUCTIONS.read_text(encoding="utf-8"),
             tools=[code_interpreter, *functions],
+            structured_inputs=STRUCTURED_INPUTS,
         ),
-        description="Code Interpreter and the 8 certified metrics as function tools.",
+        description="Code Interpreter on the session file and the 8 certified metrics.",
     )
     print(f"Agent {agent.name} version {agent.version}, model {os.environ['AGENT_MODEL']}")
-    print(f"Sample file {file_id}")
+    print("Structured inputs: " + ", ".join(STRUCTURED_INPUTS))
     print("Tools: code_interpreter, " + ", ".join(tool["name"] for tool in TOOLS))
 
 

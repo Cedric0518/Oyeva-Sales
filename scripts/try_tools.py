@@ -1,5 +1,8 @@
 """Ask the agent about Atlas, with the certified functions running here on the sample file.
 
+Atlas is read by the same code as an upload to the API, and its rows are given to Code
+Interpreter through the agent's structured inputs, as in a session.
+
 Prints which tool answered (a certified function or Code Interpreter), its arguments, a short
 result, and the answer. Run from the repository root, after `az login`:
     python -m scripts.try_tools "How much did we sell in 2025?" --runs 3
@@ -11,26 +14,27 @@ import os
 import time
 from pathlib import Path
 
-import pandas as pd
 from azure.ai.projects import AIProjectClient
 from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
 
 from api.agent import ask
-from api.checks.roles import read_targets, recognize_roles
-from api.tools import Dataset
+from api.foundry import upload_session_file
+from api.reading import ReadFile, read_sales_file
 
 ATLAS = Path("evals/data/atlas/atlas_sales.xlsx")
 STATCAN_ON = Path("tests/data/statcan_on_2026-10-23.json")
 
 
-def atlas() -> Dataset:
-    """The session the API would build after an upload of Atlas, region Ontario."""
-    sheets = pd.read_excel(ATLAS, sheet_name=None, engine="openpyxl")
-    orders = sheets.pop("Orders")
-    roles = recognize_roles(orders, sheets)
+def atlas() -> ReadFile:
+    """Atlas read exactly as the API reads an upload, region Ontario."""
     reference = json.loads(STATCAN_ON.read_text(encoding="utf-8"))
-    return Dataset(orders, roles, read_targets(sheets, roles), "ON", reference)
+    return read_sales_file(ATLAS.read_bytes(), ATLAS.name, "ON", reference)
+
+
+def session_inputs(openai, read: ReadFile) -> dict:
+    """The structured inputs of the agent for this file; the rows are uploaded once per run."""
+    return {"sales_file_id": upload_session_file(openai, read.csv), "dataset": read.description}
 
 
 def main() -> None:
@@ -44,11 +48,12 @@ def main() -> None:
         endpoint=os.environ["FOUNDRY_PROJECT_ENDPOINT"], credential=DefaultAzureCredential()
     )
     openai = project.get_openai_client()
-    data = atlas()
+    read = atlas()
+    inputs = session_inputs(openai, read)
 
     for run in range(1, args.runs + 1):
         start = time.perf_counter()
-        answer = ask(openai, os.environ["AGENT_NAME"], args.question, data)
+        answer = ask(openai, os.environ["AGENT_NAME"], args.question, read.data, inputs)
         seconds = time.perf_counter() - start
         tools = [name for name, *_ in answer.calls] + ["code_interpreter"] * len(answer.code)
         print(f"===== Run {run}: {', '.join(tools) or 'no tool'}, {seconds:.1f} s =====")

@@ -19,7 +19,7 @@ from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
 
 from api.agent import ask
-from scripts.try_tools import atlas
+from scripts.try_tools import atlas, session_inputs
 
 RUNS = 3
 CODE = "code_interpreter"
@@ -93,13 +93,14 @@ def main() -> None:
     openai = project.get_openai_client()
     agent_name = os.environ["AGENT_NAME"]
     latest = next(iter(project.agents.list_versions(agent_name=agent_name, order="desc")))
-    data = atlas()
+    read = atlas()
+    inputs = session_inputs(openai, read)
 
     runs = []
     for case, question, expected, must_contain in CASES:
         for run in range(1, RUNS + 1):
             start = time.perf_counter()
-            answer = ask(openai, agent_name, question, data)
+            answer = ask(openai, agent_name, question, read.data, inputs)
             seconds = round(time.perf_counter() - start, 1)
             tools = [name for name, *_ in answer.calls] + [CODE] * len(answer.code)
             ok = succeeded(expected, tools, answer.text, must_contain)
