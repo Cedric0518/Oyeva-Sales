@@ -13,7 +13,7 @@ python-dotenv==1.2.4
 # B3: read the definition cards of the certified metrics
 pyyaml==6.0.3
 # B5: the API (FastAPI, served by Uvicorn; uploads are multipart forms) and the Foundry client
-fastapi==0.162.0
+fastapi==0.162.4
 uvicorn==0.54.0
 python-multipart==0.0.33
 openai==3.46.0
